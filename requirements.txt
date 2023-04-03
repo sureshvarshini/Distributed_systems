@@ -3,3 +3,4 @@ redis
 flask
 sqlalchemy
 flask-migrate
+pymysql
