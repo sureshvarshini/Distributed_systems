@@ -1,0 +1,39 @@
+tmux new-session -d -s Shops
+tmux new-window -d -n sone
+tmux new-window -d -n s2
+tmux new-window -d -n s3
+tmux new-window -d -n s4
+tmux new-window -d -n s5
+tmux new-window -d -n s6
+tmux new-window -d -n s7
+tmux new-window -d -n s8
+tmux new-window -d -n s9
+tmux new-window -d -n s10
+tmux new-window -d -n s11
+tmux new-window -d -n s12
+tmux new-window -d -n s13
+tmux new-window -d -n s14
+tmux new-window -d -n s15
+tmux send-keys -t Shops:sone "cd '/cygdrive/c/Users/james/Documents/5th year/Distributed Systems/Distributed_systems/network_emulation'"
+tmux send-keys -t Shops:s2 "cd '/cygdrive/c/Users/james/Documents/5th year/Distributed Systems/Distributed_systems/network_emulation'"
+tmux send-keys -t Shops:s3 "cd '/cygdrive/c/Users/james/Documents/5th year/Distributed Systems/Distributed_systems/network_emulation'"
+tmux send-keys -t Shops:s4 "cd '/cygdrive/c/Users/james/Documents/5th year/Distributed Systems/Distributed_systems/network_emulation'"
+tmux send-keys -t Shops:s5 "cd '/cygdrive/c/Users/james/Documents/5th year/Distributed Systems/Distributed_systems/network_emulation'"
+tmux send-keys -t Shops:s6 "cd '/cygdrive/c/Users/james/Documents/5th year/Distributed Systems/Distributed_systems/network_emulation'"
+tmux send-keys -t Shops:s7 "cd '/cygdrive/c/Users/james/Documents/5th year/Distributed Systems/Distributed_systems/network_emulation'"
+tmux send-keys -t Shops:s8 "cd '/cygdrive/c/Users/james/Documents/5th year/Distributed Systems/Distributed_systems/network_emulation'"
+tmux send-keys -t Shops:s9 "cd '/cygdrive/c/Users/james/Documents/5th year/Distributed Systems/Distributed_systems/network_emulation'"
+tmux send-keys -t Shops:s10 "cd '/cygdrive/c/Users/james/Documents/5th year/Distributed Systems/Distributed_systems/network_emulation'"
+tmux send-keys -t Shops:s11 "cd '/cygdrive/c/Users/james/Documents/5th year/Distributed Systems/Distributed_systems/network_emulation'"
+tmux send-keys -t Shops:s12 "cd '/cygdrive/c/Users/james/Documents/5th year/Distributed Systems/Distributed_systems/network_emulation'"
+tmux send-keys -t Shops:s13 "cd '/cygdrive/c/Users/james/Documents/5th year/Distributed Systems/Distributed_systems/network_emulation'"
+tmux send-keys -t Shops:s14 "cd '/cygdrive/c/Users/james/Documents/5th year/Distributed Systems/Distributed_systems/network_emulation'"
+tmux send-keys -t Shops:s15 "cd '/cygdrive/c/Users/james/Documents/5th year/Distributed Systems/Distributed_systems/network_emulation'"
+tmux send-keys -t Shops:sone "python purchase_add.py --shop Cafe1 --region Ireland --id 123 --order latte --delay 5"
+tmux send-keys -t Shops:sone "python purchase_add.py --shop Cafe1 --region Ireland --id 865 --order cappuccino --delay 10"
+tmux send-keys -t Shops:s4 "python purchase_add.py --shop Cafe1 --region France --id 4142 --order cappucino --delay 1"
+tmux send-keys -t Shops:s5 "python read_transaction_history.py --shop Cafe1 --region Ireland --id 525 --delay 8"
+tmux send-keys -t Shops:s6 "python purchase_deduct.py --shop Cafe1 --region Spain --id 646 --order latte --delay 1"
+tmux send-keys -t Shops:s7 "python read_points.py --shop Cafe1 --region Ireland --id 964 --delay 2"
+tmux send-keys -t Shops:s8 "python purchase_add.py --shop Cafe1 --region France --id 098 --order latte --delay 10"
+tmux send-keys -t Shops:bash "echo Base Control"
