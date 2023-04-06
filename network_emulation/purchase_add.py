@@ -1,4 +1,5 @@
 import argparse
+import requests
 
 if __name__ =="__main__":
     parser = argparse.ArgumentParser()
@@ -13,3 +14,8 @@ if __name__ =="__main__":
     print("Here's a " + args.order)
     print("Adding points for your purchase...")
     print("Updating transaction history")
+
+    #API Request
+    response = requests.get('https://jsonplaceholder.typicode.com/posts/1')
+    data = response.json()
+    print(data)

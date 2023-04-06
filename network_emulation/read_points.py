@@ -1,4 +1,5 @@
 import argparse
+import requests
 
 if __name__ =="__main__":
     parser = argparse.ArgumentParser()
@@ -10,3 +11,8 @@ if __name__ =="__main__":
     print("Hello! Welcome to "+args.shop+" in the "+args.region+" region!")
 
     print("Checking points balnce for you...")
+
+    #API Request
+    response = requests.get('https://jsonplaceholder.typicode.com/posts/1')
+    data = response.json()
+    print(data)
