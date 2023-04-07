@@ -8,7 +8,7 @@ RUN python -m venv venv
 RUN venv/bin/pip install -r requirements.txt
 
 COPY api api
-COPY cache cache
+COPY Cache cache
 COPY database database
 COPY latterouter.py latterouter.py boot.sh ./
 RUN chmod +x boot.sh 
