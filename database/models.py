@@ -31,36 +31,46 @@ class Transaction(db.Model):
         self.user_id = user_id
 
 
-def getUser(id):
+def get_user(id):
     found_user = User.query.filter_by(user_id=id).first()
     data = {}
     data['user_id'] = found_user.user_id
     data['email'] = found_user.email
     data['points'] = found_user.points
-    return json.dumps(data)
+    return data
 
 
-def addUser(request):
-    user_details = User(email=request.json.get("email"), region=request.json.get("region"))
+def add_user(user_data):
+    user_details = User(email=user_data["email"], region=user_data["region"])
     db.session.add(user_details)
     db.session.commit()
     return user_details.user_id
 
-def updateUser(id, points):
+def update_user(user_data):
     found_user = User.query.filter_by(user_id=id).first()
-    found_user.points = points
-    db.session.add(found_user)
+    found_user.from_dict(user_data, new_user = False)
     db.session.commit()
-    return str(found_user.points)
+    return {'user_id': found_user.user_id}
 
-
-def addTransaction(user_id):
+def add_transaction(data):
     now = datetime.now().strftime("%m/%d/%Y, %H:%M:%S")
-    print(now)
-    item = {'user_id':user_id, 'date': now}
-    transactions.insert_one(item)
-    return user_id
+    item = {'user_id':data['user_id'], 'date': now, 'order_details': data['order_details']}
+    id = transactions.insert_one(item)
+    return id
 
-def getTransactions(user_id):
-    
-    return json.dumps(list(transactions.find({"user_id":user_id})), default=str)
+def get_transactions(user_id):
+    return list(transactions.find({"user_id":user_id}))
+
+def get_user_points(user_id):
+    user = User.query.filter_by(user_id=id).first()
+    data = {'user_id': user.user_id, 'points': user.points}
+    return data
+
+def update_user_points(data):
+    user = User.query.filter_by(user_id=data['user_id']).first()
+    if data['action'] == 'deduct':
+        user.points -= data['points']
+    if data['action'] == 'add':
+        user.points += data['points']
+    db.session.commit()
+    return {'user_id': user.user_id, 'points': user.points}
