@@ -1,5 +1,4 @@
 from latterouter import app
-from api import api
 from flask import request, jsonify
 from database.models import add_user, update_user, update_user_points, get_user_points, get_user
 
