@@ -12,7 +12,6 @@ app.register_blueprint(api, url_prefix="/api")
 # DB instance
 db.init_app(app)
 
-from database.models import User
 
 with app.app_context():
     db.create_all()

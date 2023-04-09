@@ -29,4 +29,4 @@ client = connect_redis()
 
 # TEST: Set userID and their corresponding loyalty point
 add_to_cache(client, "user-1234", "30")
-print(get_from_cache(client, "user-1334"))
+print(get_from_cache(client, "user-1234"))
