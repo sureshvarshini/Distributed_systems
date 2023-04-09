@@ -1,9 +1,6 @@
 # Distributed_systems
 IMPLEMENTING A GLOBALLY-ACCESSIBLE DISTRIBUTED SERVICE - Loyalty card scheme in global café
 
-# Install required packages
-```pip install requirements.txt```
-
 # Running redis as docker image - windows
 - Install docker
 - Run redis image docker command (Needs to done only once)

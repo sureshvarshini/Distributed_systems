@@ -1,0 +1,67 @@
+version: '2'
+
+networks:
+  app-network:
+    driver: bridge
+
+services:
+  redis: 
+    image: bitnami/redis:latest
+    container_name: redis
+    ports:
+      - '6379:6379'
+    environment:
+      - ALLOW_EMPTY_PASSWORD=yes
+      - PYTHONUNBUFFERED=1
+    networks:
+      - app-network
+  
+  mongodb:
+    image: mongo:4.0.8
+    container_name: mongodb
+    hostname: localhost
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: pass
+      MONGO_INITDB_DATABASE: db
+    volumes:
+      - mongo-data:/data/db
+      - mongo-configdb:/data/configdb
+    ports:
+      - 3002:27017
+    networks:
+      - app-network
+    
+  mariadb:
+    image: mariadb
+    command: --default-authentication-plugin=mysql_native_password
+    hostname: localhost
+    container_name: mariadb
+    environment:
+      MYSQL_ROOT_PASSWORD: pass
+      MYSQL_DATABASE: db
+      MYSQL_USER: root
+      MYSQL_PASSWORD: pass
+    volumes:
+      - maria-data:/var/lib/mysql
+    ports:
+      - "3001:3306"
+    networks:
+      - app-network
+
+  # flask:
+  #   build: .
+  #   container_name: latter-router
+  #   ports:
+  #     - "5000:5000"
+  #   volumes:
+  #     - .:/code
+  #   depends_on:
+  #     - redis
+  #     - mariadb
+  #     - mongodb
+
+volumes:
+  mongo-data:
+  mongo-configdb:
+  maria-data:
