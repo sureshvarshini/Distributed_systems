@@ -4,6 +4,7 @@ import uuid
 import json
 from pymongo import MongoClient
 from datetime import datetime
+from cache import redis_cache
 
 
 db = SQLAlchemy()
@@ -62,15 +63,26 @@ def get_transactions(user_id):
     return list(transactions.find({"user_id":user_id}))
 
 def get_user_points(user_id):
-    user = User.query.filter_by(user_id=id).first()
-    data = {'user_id': user.user_id, 'points': user.points}
+    # Get from redis cache
+    cache_client = redis_cache.connect_redis()
+    points = redis_cache.get_from_cache(cache_client, user_id)
+    if points is not None:
+        data = {'user_id': user_id, 'points': points}
+    else:
+        user = User.query.filter_by(user_id=id).first()
+        data = {'user_id': user.user_id, 'points': user.points}
     return data
 
 def update_user_points(data):
-    user = User.query.filter_by(user_id=data['user_id']).first()
+    user = get_user_points(data['user_id'])
     if data['action'] == 'deduct':
         user.points -= data['points']
     if data['action'] == 'add':
         user.points += data['points']
     db.session.commit()
+
+    # Update redis cache
+    cache_client = redis_cache.connect_redis()
+    redis_cache.add_to_cache(cache_client, user.user_id, user.points)
+
     return {'user_id': user.user_id, 'points': user.points}
