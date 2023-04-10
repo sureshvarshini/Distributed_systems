@@ -16,7 +16,7 @@ def connect_redis() -> redis.client.Redis:
 # The user ID and their corresponding loyalty points are cached.
 # The data will retain in cache upto 2 days
 def add_to_cache(client, key, value):
-    client.setex(key, timedelta(days=2), value=value)
+    client.setex(key, timedelta(days=1), value=value)
 
 def get_ttl(client, key):
     return client.ttl(key)
@@ -28,5 +28,5 @@ def get_from_cache(client, key):
 client = connect_redis()
 
 # TEST: Set userID and their corresponding loyalty point
-add_to_cache(client, "user-1234", "30")
-print(get_from_cache(client, "user-1234"))
+# add_to_cache(client, "user-1234", "30")
+# print(get_from_cache(client, "user-1334"))
