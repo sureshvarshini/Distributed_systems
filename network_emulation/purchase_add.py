@@ -54,7 +54,7 @@ if __name__ == "__main__":
     points = switch(builder, args.region, defaultPoints)
     jsonObject = constructObject(points)
 
-    url = "https://jsonplaceholder.typicode.com/posts/" + points
+    url = "https://127.0.0.1/" + points
     # may need to add data instead of json
     response = requests.post(url, json=jsonObject)
     data = response.json()
