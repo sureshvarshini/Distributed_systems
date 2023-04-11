@@ -40,7 +40,7 @@ def get_user(userid):
         response = jsonify({'error': 'Invalid request method'})
         return response
 
-@app.route("/user/<int:id>/points", methods=["GET", 'PUT'])
+@app.route("/user/<string:id>/points", methods=["GET", 'PUT'])
 def user_points(id):
     if request.method == 'GET':
         response = jsonify(get_user_points(id))
@@ -48,5 +48,5 @@ def user_points(id):
         return response
     elif request.method == 'PUT':
         data = request.get_json()
-        response = jsonify(update_user_points(data))
+        response = jsonify(update_user_points(id, data))
         return response
