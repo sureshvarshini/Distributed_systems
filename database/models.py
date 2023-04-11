@@ -73,8 +73,8 @@ def get_user_points(user_id):
         data = {'user_id': user.user_id, 'points': user.points}
     return data
 
-def update_user_points(data):
-    user = get_user_points(data['user_id'])
+def update_user_points(user_id, data):
+    user = get_user_points(user_id)
     if data['action'] == 'deduct':
         user.points -= data['points']
     if data['action'] == 'add':
