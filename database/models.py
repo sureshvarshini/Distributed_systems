@@ -3,14 +3,13 @@ from sqlalchemy.sql import func
 import uuid
 from pymongo import MongoClient
 from datetime import datetime
-from latterouter import redis_client
-
+from cache.redis_cache import RedisClient
 
 db = SQLAlchemy()
 client = MongoClient('localhost', 3002,username='root', password='pass')
 mdb = client.flask_db
 transactions = mdb.transactions
-
+redis_client = RedisClient()
 
 class User(db.Model):
     id = db.Column(db.Integer, primary_key=True)

@@ -18,7 +18,6 @@ with app.app_context():
 
 print(app.url_map)
 
-redis_client = RedisClient()
 @app.route('/')
 @app.route('/index')
 def index():
