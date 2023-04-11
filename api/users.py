@@ -32,9 +32,13 @@ def user(id):
 
 @app.route("/user/<string:userid>", methods=["GET"])
 def get_user(userid):
-    response = jsonify(get_user(userid))
-    response.status_code = 200
-    return response
+    if request.method == 'GET':
+        response = jsonify(get_user(userid))
+        response.status_code = 200
+        return response
+    else:
+        response = jsonify({'error': 'Invalid request method'})
+        return response
 
 @app.route("/user/<int:id>/points", methods=["GET", 'PUT'])
 def user_points(id):
