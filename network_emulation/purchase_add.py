@@ -4,20 +4,21 @@ import argparse
 import requests
 from abc import ABC, abstractmethod
 from typing import Any
-import business_logic
 
+from business_logic.Director import Director
+from business_logic.ConcreteBuilder1 import ConcreteBuilder1
 
 
 def switch(builder, region, defaultPoint):
-    if region == 1:
+    if region == "ire":
         builder.produce_part_a()
-    if region == 2:
+    if region == "fran":
         builder.produce_part_b()
-    if region == 3:
+    if region == "ind":
         builder.produce_part_c()
-    if region == 4:
+    if region == "rom":
         builder.produce_part_d()
-    if region == 5:
+    if region == "spa":
         builder.produce_part_a()
         builder.produce_part_a()
 
@@ -46,8 +47,8 @@ if __name__ == "__main__":
     # API Request
     # add business logic points, with json payload
     # myobj = { "action": "<deduct/add>", "points": 25}
-    director = business_logic.Director()
-    builder = business_logic.ConcreteBuilder1
+    director = Director()
+    builder = ConcreteBuilder1()
     director.builder = builder
 
     defaultPoints = 1
