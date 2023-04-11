@@ -1,10 +1,9 @@
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy.sql import func
 import uuid
-import json
 from pymongo import MongoClient
 from datetime import datetime
-from cache import redis_cache
+from latterouter import redis_client
 
 
 db = SQLAlchemy()
@@ -64,8 +63,7 @@ def get_transactions(user_id):
 
 def get_user_points(user_id):
     # Get from redis cache
-    cache_client = redis_cache.connect_redis()
-    points = redis_cache.get_from_cache(cache_client, user_id)
+    points = redis_client.get_from_cache(user_id)
     if points is not None:
         data = {'user_id': user_id, 'points': points}
     else:
@@ -82,7 +80,6 @@ def update_user_points(user_id, data):
     db.session.commit()
 
     # Update redis cache
-    cache_client = redis_cache.connect_redis()
-    redis_cache.add_to_cache(cache_client, user.user_id, user.points)
+    redis_client.add_to_cache(user.user_id, user.points)
 
     return {'user_id': user.user_id, 'points': user.points}
