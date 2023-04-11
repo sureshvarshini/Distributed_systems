@@ -5,8 +5,10 @@ import requests
 from abc import ABC, abstractmethod
 from typing import Any
 
-from business_logic.Director import Director
-from business_logic.ConcreteBuilder1 import ConcreteBuilder1
+import sys
+sys.path.append('../business_logic')
+from Director import Director
+from ConcreteBuilder1 import ConcreteBuilder1
 
 
 def switch(builder, region, defaultPoint):
@@ -54,9 +56,10 @@ if __name__ == "__main__":
     defaultPoints = 1
     points = switch(builder, args.region, defaultPoints)
     jsonObject = constructObject(points)
+    print(jsonObject)
 
-    url = "https://127.0.0.1/" + points
+    url = "http://127.0.0.1:5000/users/2"
     # may need to add data instead of json
-    response = requests.post(url, json=jsonObject)
-    data = response.json()
-    print(data)
+    #response = requests.post(url, json=jsonObject)
+    #data = response.json()
+    #print(data)
