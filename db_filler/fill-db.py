@@ -10,6 +10,9 @@ for line in file:
    user = {
       "user_id": user_info[0],
       "name": user_info[1],
-      "email": user_info[2]
+      "email": user_info[2],
+      "points": 0 
    }
-   print(user)
+   url = "http://localhost:5000/users/"+user_info[0]
+   res = requests.post(url, json=user)
+   print(res)

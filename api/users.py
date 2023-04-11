@@ -2,7 +2,7 @@ from latterouter import app
 from flask import request, jsonify
 from database.models import add_user, update_user, update_user_points, get_user_points, get_user
 
-@app.route("/users/<int:id>", methods=['POST', 'PUT'])
+@app.route("/users/<string:id>", methods=['POST', 'PUT'])
 def user(id):
     if request.method == 'POST':
         # Adding new user

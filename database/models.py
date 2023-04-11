@@ -14,10 +14,12 @@ redis_client = RedisClient()
 class User(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     user_id = db.Column(db.String(120))
+    name = db.Column(db.String(120))
     email = db.Column(db.String(120), unique=True)
     points = db.Column(db.Integer)
-    def __init__(self, email, region):
-        self.user_id = "-" + region +str(uuid.uuid4())
+    def __init__(self, userid, name, email):
+        self.user_id = userid
+        self.name = name
         self.email = email
         self.points = 0
 
@@ -40,7 +42,7 @@ def get_user(id):
 
 
 def add_user(user_data):
-    user_details = User(email=user_data["email"], region=user_data["region"])
+    user_details = User(email=user_data["email"], name=user_data["name"], userid=user_data["user_id"])
     db.session.add(user_details)
     db.session.commit()
     return user_details.user_id
