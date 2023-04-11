@@ -38,3 +38,9 @@ class Director:
         self.builder.produce_part_a()
         self.builder.produce_part_b()
         self.builder.produce_part_c()
+
+    def build_normal_product(self) -> None:
+        self.builder.produce_part_c()
+
+    def build_triple_part_product(self) -> None:
+        self.builder.produce_part_d()

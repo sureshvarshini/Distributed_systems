@@ -25,20 +25,6 @@ class ConcreteBuilder1(CoffeeShopBuilder):
 
     @property
     def product(self) -> CoffeeShop1:
-        """
-        Concrete Builders are supposed to provide their own methods for
-        retrieving results. That's because various types of builders may create
-        entirely different products that don't follow the same interface.
-        Therefore, such methods cannot be declared in the base Builder interface
-        (at least in a statically typed programming language).
-
-        Usually, after returning the end result to the client, a builder
-        instance is expected to be ready to start producing another product.
-        That's why it's a usual practice to call the reset method at the end of
-        the `getProduct` method body. However, this behavior is not mandatory,
-        and you can make your builders wait for an explicit reset call from the
-        client code before disposing of the previous result.
-        """
         product = self._product
         self.reset()
         return product
@@ -51,3 +37,6 @@ class ConcreteBuilder1(CoffeeShopBuilder):
 
     def produce_part_c(self) -> None:
         self._product.add("PartC1")
+
+    def produce_part_d(self) -> None:
+        self._product.add("PartD1")
