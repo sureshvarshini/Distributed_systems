@@ -16,6 +16,9 @@ if __name__ =="__main__":
     print("Updating transaction history")
 
     #API Request
+    # add business logic points, with json payload
+    # myobj = { "action": "<deduct/add>", "points": 25}
+    requests.put(url, data = myobj)
     response = requests.get('https://jsonplaceholder.typicode.com/posts/1')
     data = response.json()
     print(data)
