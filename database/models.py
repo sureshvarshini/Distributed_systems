@@ -1,14 +1,18 @@
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy.sql import func
 import uuid
-from pymongo import MongoClient
+from pymongo import MongoClient, errors
 from datetime import datetime
 from cache.redis_cache import RedisClient
 
 db = SQLAlchemy()
-client = MongoClient('localhost', 3002,username='root', password='pass')
-mdb = client.flask_db
-transactions = mdb.transactions
+client = MongoClient(host='mongodb', port=27017, username='root', password='pass')
+# Connect to database - db
+mdb = client["db"]
+# Connect to collections - transactions
+transactions = mdb["transactions"]
+print("Connected to MONGODB")
+# Connect to redis
 redis_client = RedisClient()
 
 class User(db.Model):
