@@ -1,6 +1,6 @@
 from latterouter import app
 from flask import request, jsonify
-from database.models import add_user, update_user, update_user_points, get_user_points, get_user
+from database.models import add_user, update_user, update_user_points, get_user_points, get_user_info
 
 @app.route("/users/<string:id>", methods=['POST', 'PUT'])
 def user(id):
@@ -33,7 +33,8 @@ def user(id):
 @app.route("/user/<string:userid>", methods=["GET"])
 def get_user(userid):
     if request.method == 'GET':
-        response = jsonify(get_user(userid))
+        user = get_user_info(userid)
+        response = jsonify(user)
         response.status_code = 200
         return response
     else:
