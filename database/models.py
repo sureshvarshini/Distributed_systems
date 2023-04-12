@@ -68,7 +68,7 @@ def add_transaction(data):
     now = datetime.now().strftime("%m/%d/%Y, %H:%M:%S")
     item = {'user_id':data['user_id'], 'date': now, 'order_details': data['order_details']}
     id = transactions.insert_one(item)
-    return id
+    return str(id.inserted_id)
 
 def get_transactions(user_id):
     print('Fetching user transactions from Mongodb.', flush=True)
