@@ -1,6 +1,7 @@
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy.sql import func
-import uuid
+from sqlalchemy import update
+from flask import jsonify
 from pymongo import MongoClient, errors
 from datetime import datetime
 from cache.redis_cache import RedisClient
@@ -35,15 +36,11 @@ class Transaction(db.Model):
     def __init__(self, user_id):
         self.user_id = user_id
 
-
 def get_user_info(id):
     print('Fetching user data from Mariadb.', flush=True)
-    found_user = User.query.filter_by(user_id=id).first()
-    data = {}
-    data['user_id'] = found_user.user_id
-    data['email'] = found_user.email
-    data['points'] = found_user.points
-    return data
+    found_user = db.first_or_404(db.select(User).filter_by(user_id=id))
+    print(f"test: {found_user}", flush=True)
+    return found_user
 
 
 def add_user(user_data):
@@ -55,7 +52,7 @@ def add_user(user_data):
 
 def update_user(user_data):
     print('Updating user data to mariadb.', flush=True)
-    found_user = User.query.filter_by(user_id=user_data["user_id"]).first()
+    found_user = db.first_or_404(db.select(User).filter_by(user_id=id))
     if "email" in user_data:
         found_user.email = user_data["email"]
     if "name" in user_data:
@@ -80,26 +77,33 @@ def get_transactions(user_id):
 def get_user_points(user_id):
     # Get from redis cache
     points = redis_client.get_from_cache(user_id)
+    print(type(points))
     if points is not None:
         print('Fetching user points from redis cache.', flush=True)
-        data = {'user_id': user_id, 'points': points}
+        data = {'user_id': user_id, 'points': int(points)}
     else:
         print('Fetching user points from mariadb.', flush=True)
-        user = User.query.filter_by(user_id=user_id).first()
-        data = {'user_id': user.user_id, 'points': user.points}
+        data = jsonify(db.first_or_404(db.select(User).filter_by(user_id=id)))
     return data
 
 def update_user_points(user_id, data):
-    user = get_user_points(user_id)
+    points_data = get_user_points(user_id)
+    user = get_user_info(user_id)
+    points_to_deduct = data['points']
+    print(points_data, flush=True)
     if data['action'] == 'deduct':
-        user.points -= data['points']
-    if data['action'] == 'add':
-        user.points += data['points']
-    print('Updating user points to mariadb.', flush=True)
+        if points_data['points'] - points_to_deduct < 0:
+            response = {'error': 'Insufficient points. Could not deduct'}
+            return response
+        points_data['points'] -= points_to_deduct
+    elif data['action'] == 'add':
+        points_data['points'] += points_to_deduct
+    print(f'Updating user points to mariadb.', flush=True)
+    user.points = points_data['points']
     db.session.commit()
 
     # Update redis cache
     print('Updating user points to redis cache.', flush=True)
-    redis_client.add_to_cache(user.user_id, user.points)
+    redis_client.add_to_cache(points_data['user_id'], points_data['points'])
 
-    return {'user_id': user.user_id, 'points': user.points}
+    return {'user_id': points_data['user_id'], 'points': points_data['points']}

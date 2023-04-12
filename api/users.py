@@ -3,7 +3,7 @@ from flask import request, jsonify
 from database.models import add_user, update_user, update_user_points, get_user_points, get_user_info
 
 @app.route("/users/<string:id>", methods=['POST', 'PUT'])
-def user(id):
+def points_data(id):
     if request.method == 'POST':
         # Adding new user
         data = request.get_json()
@@ -30,7 +30,7 @@ def user(id):
             response.status_code = 500
             return response
 
-@app.route("/user/<string:userid>", methods=["GET"])
+@app.route("/users/<string:userid>", methods=["GET"])
 def get_user(userid):
     if request.method == 'GET':
         user = get_user_info(userid)
@@ -41,7 +41,7 @@ def get_user(userid):
         response = jsonify({'error': 'Invalid request method'})
         return response
 
-@app.route("/user/<string:id>/points", methods=["GET", 'PUT'])
+@app.route("/users/<string:id>/points", methods=["GET", 'PUT'])
 def user_points(id):
     if request.method == 'GET':
         response = jsonify(get_user_points(id))
@@ -49,5 +49,8 @@ def user_points(id):
         return response
     elif request.method == 'PUT':
         data = request.get_json()
-        response = jsonify(update_user_points(id, data))
+        response = update_user_points(id, data)
+        if 'error' in response:
+            response = jsonify(response)
+            response.status_code = 400
         return response
