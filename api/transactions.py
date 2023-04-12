@@ -18,7 +18,7 @@ def transactions(id):
 @app.route("/transactions/<string:userid>", methods=["GET"])
 def get_user_transactions(userid):
     if request.method == 'GET':
-        transactions = get_transactions(id)
+        transactions = get_transactions(userid)
         response = jsonify(transactions)
         return response
     else:

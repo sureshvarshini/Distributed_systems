@@ -69,7 +69,13 @@ def add_transaction(data):
 
 def get_transactions(user_id):
     print('Fetching user transactions from Mongodb.', flush=True)
-    return list(transactions.find({"user_id":user_id}))
+    transactions_list = {}
+    for transaction in transactions.find({"user_id":user_id}):
+        transactions_list[str(transaction["_id"])] = {
+            "date": transaction["date"],
+            "order_details": transaction["order_details"]
+        }
+    return transactions_list
 
 def get_user_points(user_id):
     # Get from redis cache
