@@ -9,3 +9,4 @@ pymysql
 flask-mysqldb
 pymongo
 rq
+requests

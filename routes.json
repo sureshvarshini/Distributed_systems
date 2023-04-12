@@ -1,0 +1,14 @@
+{
+    "EUW" : {
+        "api_port": 5000,
+        "maria_port": 3306,
+        "mongo_port": 27017,
+        "redis_port": 6379
+    },
+    "EUE" : {
+        "api_port": 5001,
+        "maria_port": 3306,
+        "mongo_port": 27017,
+        "redis_port": 6379
+    }
+}

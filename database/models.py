@@ -4,10 +4,12 @@ from sqlalchemy import update
 from flask import jsonify
 from pymongo import MongoClient, errors
 from datetime import datetime
+import uuid
 from cache.redis_cache import RedisClient
+from config import MONGO_PORT, REGION
 
 db = SQLAlchemy()
-client = MongoClient(host='mongodb', port=27017, username='root', password='pass')
+client = MongoClient(host='mongodb', port=MONGO_PORT, username='root', password='pass')
 # Connect to database - db
 mdb = client["db"]
 # Connect to collections - transactions
@@ -22,9 +24,8 @@ class User(db.Model):
     name = db.Column(db.String(120))
     email = db.Column(db.String(120), unique=True)
     points = db.Column(db.Integer)
-
-    def __init__(self, userid, name, email):
-        self.user_id = userid
+    def __init__(self, name, email):
+        self.user_id = REGION + str(uuid.uuid4())
         self.name = name
         self.email = email
         self.points = 0
@@ -40,11 +41,11 @@ def get_user_info(id):
 
 def add_user(user_data):
     print('Adding new user data to mariadb.', flush=True)
-    user_details = User(email=user_data["email"], name=user_data["name"], userid=user_data["user_id"])
+    user_details = User(email=user_data["email"], name=user_data["name"])
     db.session.add(user_details)
     db.session.commit()
     print('Updating new user with 0 points to redis cache.', flush=True)
-    redis_client.add_to_cache(user_data["user_id"], 0)
+    redis_client.add_to_cache(user_details.user_id, 0)
     return user_details.user_id
 
 def update_user(user_data, id):

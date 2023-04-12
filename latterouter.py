@@ -1,11 +1,11 @@
 from flask import Flask
 from database.models import db
-
+from config import MARIA_PORT
 
 # App instance
 app = Flask(__name__)
 
-app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://root:pass@mariadb:3306/db'
+app.config['SQLALCHEMY_DATABASE_URI'] = f'mysql+pymysql://root:pass@mariadb:{MARIA_PORT}/db'
 from api import api
 from cache.redis_cache import RedisClient
 app.register_blueprint(api, url_prefix="/api")

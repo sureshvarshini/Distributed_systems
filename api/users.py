@@ -1,30 +1,40 @@
 from latterouter import app
 from flask import request, jsonify
 from database.models import add_user, update_user, update_user_points, get_user_points, get_user_info
+from config import REGION, AVAILABLE_REGIONS, redirect_request_to_region
 
 @app.route("/users/<string:id>", methods=['POST', 'PUT'])
 def points_data(id):
     if request.method == 'POST':
         # Adding new user
         data = request.get_json()
+        if 'region' not in data or data['region'] not in AVAILABLE_REGIONS:
+            response = jsonify({'error': 'Region missing or invalid region provided.'})
+            response.status_code = 400
+            return response
         try:
             user_id = add_user(data)
+            print(user_id, flush=True)
             if user_id is not None:
                 response = jsonify({'id': user_id, 'message': 'Sucessfully created.'})
                 response.status_code = 200
             else:
-                response = jsonify({'error': 'User with given details already registered.'})
+                response = jsonify({'error': 'Unable to create'})
                 response.status_code = 400
             return response
-        except:
-            response = jsonify({'error': 'User with given details already registered.'})
+        except Exception as e:
+            print(e)
+            response = jsonify({'error': f'Exception occured while creating user. {str(e)}'})
             response.status_code = 400
-            return response
-
-    
+            return response 
     else:
         # Update user
+        user_region = id[:3]
         data = request.get_json()
+        if user_region != REGION:
+            print(request.url)
+            response = redirect_request_to_region(request.method, request.url, user_region, data)
+            return response
         user = update_user(data, id)
         if user is not None:
             response = jsonify({'id': user.user_id, 'message': 'Sucessfully updated.'})
@@ -34,6 +44,7 @@ def points_data(id):
             response = jsonify({'error': 'User not found'})
             response.status_code = 404
             return response
+
 
 @app.route("/users/<string:userid>", methods=["GET"])
 def get_user(userid):
