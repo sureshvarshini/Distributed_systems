@@ -13,6 +13,6 @@ if __name__ =="__main__":
     print("Checking points balnce for you...")
 
     #API Request
-    response = requests.get('https://jsonplaceholder.typicode.com/posts/1')
+    response = requests.get("http://127.0.0.1:5000/user/" + args.id + "/" + "points")
     data = response.json()
     print(data)

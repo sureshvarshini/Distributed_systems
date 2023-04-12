@@ -4,6 +4,7 @@ import argparse
 import requests
 from abc import ABC, abstractmethod
 from typing import Any
+import json
 
 import sys
 sys.path.append('../business_logic')
@@ -28,7 +29,7 @@ def switch(builder, region, defaultPoint):
 
 
 def constructObject(points):
-    jsonObject = {"action": "<add>", "points": points}
+    jsonObject = {"action": "<deduct>", "points": points}
     return jsonObject
 
 
@@ -58,8 +59,15 @@ if __name__ == "__main__":
     jsonObject = constructObject(points)
     print(jsonObject)
 
-    url = "http://127.0.0.1:5000/users/2"
-    # may need to add data instead of json
-    #response = requests.post(url, json=jsonObject)
-    #data = response.json()
-    #print(data)
+    #Add points
+    url = "http://127.0.0.1:5000/user/" + args.id + "/" + "points"
+    response = requests.put(url,json=jsonObject)
+    data = response.json()
+    print(data)
+
+    #Update Transaction History
+    id = 1 #What should this be?
+    url = 'http://127.0.0.1:5000/transactions/' + str(id)
+    response = requests.post(url,json={"user_id": args.id, "order_details": args.order})
+    data = response.json()
+    print(data)

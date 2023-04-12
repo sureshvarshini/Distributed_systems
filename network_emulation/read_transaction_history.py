@@ -13,6 +13,6 @@ if __name__ =="__main__":
     print("Getting your transaction history..")
 
     #API Request
-    response = requests.get('https://jsonplaceholder.typicode.com/posts/1')
+    response = requests.get('http://127.0.0.1:5000/transactions/' +args.id)
     data = response.json()
     print(data)
