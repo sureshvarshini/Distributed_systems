@@ -78,7 +78,7 @@ def get_user_points(user_id):
     if points is not None:
         data = {'user_id': user_id, 'points': points}
     else:
-        user = User.query.filter_by(user_id=id).first()
+        user = User.query.filter_by(user_id=user_id).first()
         data = {'user_id': user.user_id, 'points': user.points}
     return data
 
