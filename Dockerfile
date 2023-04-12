@@ -13,6 +13,4 @@ COPY . .
 RUN chown -R latterouter:latterouter ./
 USER latterouter
 
-CMD ["python", "-m", "flask", "--app", "latterouter", "run", "-h", "0.0.0.0", "--debug"]
-
-EXPOSE 5000
+EXPOSE 5001
