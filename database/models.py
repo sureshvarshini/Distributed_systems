@@ -36,7 +36,7 @@ class Transaction(db.Model):
         self.user_id = user_id
 
 
-def get_user(id):
+def get_user_info(id):
     found_user = User.query.filter_by(user_id=id).first()
     data = {}
     data['user_id'] = found_user.user_id
