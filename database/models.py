@@ -52,10 +52,16 @@ def add_user(user_data):
     return user_details.user_id
 
 def update_user(user_data):
-    found_user = User.query.filter_by(user_id=id).first()
-    found_user.from_dict(user_data, new_user = False)
+    found_user = User.query.filter_by(user_id=user_data["user_id"]).first()
+    if "email" in user_data:
+        found_user.email = user_data["email"]
+    if "name" in user_data:
+        found_user.name = user_data["name"]
+    if "points" in user_data:
+        found_user.points = user_data["points"]
+    # found_user.from_dict(user_data, new_user = False)
     db.session.commit()
-    return {'user_id': found_user.user_id}
+    return {'updated_user': found_user.user_id}
 
 def add_transaction(data):
     now = datetime.now().strftime("%m/%d/%Y, %H:%M:%S")
