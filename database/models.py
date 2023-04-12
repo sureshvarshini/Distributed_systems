@@ -37,6 +37,7 @@ class Transaction(db.Model):
 
 
 def get_user_info(id):
+    print('Fetching user data from Mariadb.', flush=True)
     found_user = User.query.filter_by(user_id=id).first()
     data = {}
     data['user_id'] = found_user.user_id
@@ -46,12 +47,14 @@ def get_user_info(id):
 
 
 def add_user(user_data):
+    print('Adding new user data to mariadb.', flush=True)
     user_details = User(email=user_data["email"], name=user_data["name"], userid=user_data["user_id"])
     db.session.add(user_details)
     db.session.commit()
     return user_details.user_id
 
 def update_user(user_data):
+    print('Updating user data to mariadb.', flush=True)
     found_user = User.query.filter_by(user_id=user_data["user_id"]).first()
     if "email" in user_data:
         found_user.email = user_data["email"]
@@ -64,20 +67,24 @@ def update_user(user_data):
     return {'updated_user': found_user.user_id}
 
 def add_transaction(data):
+    print('Adding user transactions to Mongodb.', flush=True)
     now = datetime.now().strftime("%m/%d/%Y, %H:%M:%S")
     item = {'user_id':data['user_id'], 'date': now, 'order_details': data['order_details']}
     id = transactions.insert_one(item)
     return id
 
 def get_transactions(user_id):
+    print('Fetching user transactions from Mongodb.', flush=True)
     return list(transactions.find({"user_id":user_id}))
 
 def get_user_points(user_id):
     # Get from redis cache
     points = redis_client.get_from_cache(user_id)
     if points is not None:
+        print('Fetching user points from redis cache.', flush=True)
         data = {'user_id': user_id, 'points': points}
     else:
+        print('Fetching user points from mariadb.', flush=True)
         user = User.query.filter_by(user_id=user_id).first()
         data = {'user_id': user.user_id, 'points': user.points}
     return data
@@ -88,9 +95,11 @@ def update_user_points(user_id, data):
         user.points -= data['points']
     if data['action'] == 'add':
         user.points += data['points']
+    print('Updating user points to mariadb.', flush=True)
     db.session.commit()
 
     # Update redis cache
+    print('Updating user points to redis cache.', flush=True)
     redis_client.add_to_cache(user.user_id, user.points)
 
     return {'user_id': user.user_id, 'points': user.points}
