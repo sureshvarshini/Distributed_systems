@@ -7,35 +7,44 @@ def points_data(id):
     if request.method == 'POST':
         # Adding new user
         data = request.get_json()
-        user_id = add_user(data)
-        if user_id is not None: 
-            response = jsonify({'id': user_id})
+        try:
+            user_id = add_user(data)
+            if user_id is not None:
+                response = jsonify({'id': user_id, 'message': 'Sucessfully created.'})
+                response.status_code = 200
+            else:
+                response = jsonify({'error': 'User with given details already registered.'})
+                response.status_code = 400
+            return response
+        except:
+            response = jsonify({'error': 'User with given details already registered.'})
+            response.status_code = 400
+            return response
+
+    
+    else:
+        # Update user
+        data = request.get_json()
+        user = update_user(data, id)
+        if user is not None:
+            response = jsonify({'id': user.user_id, 'message': 'Sucessfully updated.'})
             response.status_code = 200
             return response
         else:
             response = jsonify({'error': 'User not found'})
             response.status_code = 404
             return response
-    
-    else:
-        # Update user
-        data = request.get_json()
-        user_id = update_user(data)
-        if user_id is not None: 
-            response = jsonify({'id': user_id})
-            response.status_code = 200
-            return response
-        else:
-            response = jsonify({'error': 'Error adding user'})
-            response.status_code = 500
-            return response
 
 @app.route("/users/<string:userid>", methods=["GET"])
 def get_user(userid):
     if request.method == 'GET':
         user = get_user_info(userid)
-        response = jsonify(user)
-        response.status_code = 200
+        if user is not None:
+            response = jsonify(user.as_dict())
+            response.status_code = 200
+        else:
+            response = jsonify({'error': 'User not found'})
+            response.status_code = 404
         return response
     else:
         response = jsonify({'error': 'Invalid request method'})
