@@ -18,28 +18,23 @@ redis_client = RedisClient()
 
 class User(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    user_id = db.Column(db.String(120))
+    user_id = db.Column(db.String(120), unique=True)
     name = db.Column(db.String(120))
     email = db.Column(db.String(120), unique=True)
     points = db.Column(db.Integer)
+
     def __init__(self, userid, name, email):
         self.user_id = userid
         self.name = name
         self.email = email
         self.points = 0
 
-
-class Transaction(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    user_id = db.Column(db.String(120))
-    date = db.Column(db.DateTime(timezone=True), default=func.now())
-    def __init__(self, user_id):
-        self.user_id = user_id
+    def as_dict(self):
+        return {c.name: getattr(self, c.name) for c in self.__table__.columns}
 
 def get_user_info(id):
     print('Fetching user data from Mariadb.', flush=True)
-    found_user = db.first_or_404(db.select(User).filter_by(user_id=id))
-    print(f"test: {found_user}", flush=True)
+    found_user = User.query.filter_by(user_id=id).first()
     return found_user
 
 
@@ -48,20 +43,22 @@ def add_user(user_data):
     user_details = User(email=user_data["email"], name=user_data["name"], userid=user_data["user_id"])
     db.session.add(user_details)
     db.session.commit()
+    print('Updating new user with 0 points to redis cache.', flush=True)
+    redis_client.add_to_cache(user_data["user_id"], 0)
     return user_details.user_id
 
-def update_user(user_data):
+def update_user(user_data, id):
     print('Updating user data to mariadb.', flush=True)
-    found_user = db.first_or_404(db.select(User).filter_by(user_id=id))
-    if "email" in user_data:
-        found_user.email = user_data["email"]
-    if "name" in user_data:
-        found_user.name = user_data["name"]
-    if "points" in user_data:
-        found_user.points = user_data["points"]
-    # found_user.from_dict(user_data, new_user = False)
-    db.session.commit()
-    return {'updated_user': found_user.user_id}
+    found_user = User.query.filter_by(user_id=id).first()
+    if found_user is not None:
+        if "email" in user_data:
+            found_user.email = user_data["email"]
+        if "name" in user_data:
+            found_user.name = user_data["name"]
+        if "points" in user_data:
+            found_user.points = user_data["points"]
+        db.session.commit()
+    return found_user
 
 def add_transaction(data):
     print('Adding user transactions to Mongodb.', flush=True)
