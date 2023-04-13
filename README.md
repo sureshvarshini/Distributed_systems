@@ -19,6 +19,9 @@ IMPLEMENTING A GLOBALLY-ACCESSIBLE DISTRIBUTED SERVICE - Loyalty card scheme in 
     ```docker-compose -f docker-compose-<region>.yml up```
 
     You should be able see all the containers up and application running at ports.
+- Compose down to stop the application. *(Do this command for all specified regions.)*.
+
+    ```docker-compose -f docker-compose-<region>.yml down```
 
 # Exposed APIs
 ## User registration management system
