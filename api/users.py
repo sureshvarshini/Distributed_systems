@@ -29,7 +29,7 @@ def points_data(id):
             return response 
     else:
         # Update user
-        user_region = id[:3]
+        user_region = id[0:3]
         data = request.get_json()
         print(user_region, flush=True)
         if user_region != REGION:
