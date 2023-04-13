@@ -2,85 +2,66 @@ version: '2'
 
 networks:
   app-network:
-    external: true
+    #external: true
     driver: bridge
 
 services:
-  redis: 
+  redis-fran: 
     image: bitnami/redis:latest
-    container_name: redis
+    container_name: redis-fran
+    volumes:
+      - ./redis-fran:/data
     ports:
-      - '6379:6379'
+      - '6380:6380'
     environment:
       - ALLOW_EMPTY_PASSWORD=yes
       - PYTHONUNBUFFERED=1
     networks:
       - app-network
   
-  mongodb:
+  mongodb-fran:
     image: mongo:4.0.8
-    container_name: mongodb
+    container_name: mongodb-fran
     environment:
       MONGO_INITDB_ROOT_USERNAME: root
       MONGO_INITDB_ROOT_PASSWORD: pass
       MONGO_INITDB_DATABASE: db
     volumes:
-      - mongo-data:/data/db
-      - mongo-configdb:/data/configdb
+      #- mongo-data2:/data/db
+      - ./data/db-fran:/data/db
+      #- mongo-configdb:/data/configdb
     ports:
       - 3002:3002
-      - 27017:27017
+      - 27019:27019
     networks:
       - app-network
     
 
-  mariadb:
+  mariadb-fran:
     image: mariadb
-    container_name: mariadb
+    container_name: mariadb-fran
     environment:
       MYSQL_ROOT_PASSWORD: pass
       MYSQL_DATABASE: db
       MARIADB_DATABASE: db
       MYSQL_USER: root
     volumes:
-      - mariadb-data:/var/lib/mysql
+      #- mariadb-data-fran:/var/lib/mysql
+      - ./mariadb-fran:/var/lib/mysq
     ports:
-      - "3001:3001"
-      - "3310:3310"
+      - "3003:3003"
+      - "3311:3311"
     restart: always
     networks:
       - app-network
 
-  nginx:
-    image: nginx:latest
-    volumes:
-      - ./load_balancer/nginx.conf:/etc/nginx/nginx.conf:ro
-    ports:
-      - "80:80"
   
-  app1eue:
+  fran-app:
     build: .
-    container_name: app1eue
-    command: python -m flask --app latterouter run -h 0.0.0.0 --port=5010 --debug
-    environment:
-      REGION: 'EUE'
-    volumes:
-      - .:/app
-    ports:
-      - "5010:5010"
-    networks:
-      - app-network
-    depends_on:
-      - redis
-      - mariadb
-      - mongodb
-
-  app2eue:
-    build: .
-    container_name: app2eue
+    container_name: fran-app
     command: python -m flask --app latterouter run -h 0.0.0.0 --port=5011 --debug
     environment:
-      REGION: 'EUE'
+      REGION: 'EUW'
     volumes:
       - .:/app
     ports:
@@ -88,9 +69,10 @@ services:
     networks:
       - app-network
     depends_on:
-      - redis
-      - mariadb
-      - mongodb
+      - redis-fran
+      - mariadb-fran
+      - mongodb-fran
+
 
 volumes:
   mongo-data:

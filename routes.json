@@ -1,14 +1,20 @@
 {
-    "EUW" : {
-        "api_port": 5000,
-        "maria_port": 3306,
-        "mongo_port": 27017,
-        "redis_port": 6379
-    },
     "EUE" : {
         "api_port": 5010,
-        "maria_port": 3306,
-        "mongo_port": 27017,
-        "redis_port": 6379
+        "maria_port": 3301,
+        "mongo_port": 3300,
+        "redis_address": {
+            "redis_port": 6379,
+            "redis_host": "redis-ire"
+        }
+    },
+    "EUW" : {
+        "api_port": 5011,
+        "maria_port": 3003,
+        "mongo_port": 3002,
+        "redis_address": {
+            "redis_port": 6380,
+            "redis_host": "redis-fran"
+        }
     }
 }

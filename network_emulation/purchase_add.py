@@ -81,6 +81,7 @@ if __name__ == "__main__":
     jsonObject = constructObject(points)
     print(jsonObject)
 
+<<<<<<< HEAD
     region = config[args.region]["api_port"]
 
     # Add points
@@ -95,3 +96,17 @@ if __name__ == "__main__":
     response = requests.post(url, json={"user_id": args.id, "order_details": args.order})
     data = response.json()
     print(data)
+=======
+    #Add points
+    url = "http://127.0.0.1:5000/users/" + args.id + "/" + "points"
+    response = requests.put(url,json=jsonObject)
+    #data = response.json()
+    print(response)
+
+    #Update Transaction History
+    id = 1 #What should this be?
+    url = 'http://127.0.0.1:5000/transactions/' + str(id)
+    response = requests.post(url,json={"user_id": args.id, "order_details": args.order})
+    #data = response.json()
+    print(response)
+>>>>>>> 2a55528 (Setting up multiple DB's)

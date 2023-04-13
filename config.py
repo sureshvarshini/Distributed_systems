@@ -12,7 +12,7 @@ REGION = os.environ.get("REGION")
 API_PORT = config[REGION]['api_port']
 MARIA_PORT = config[REGION]['maria_port']
 MONGO_PORT = config[REGION]['mongo_port']
-REDIS_PORT = config[REGION]['redis_port']
+REDIS_ADDRESS = config[REGION]['redis_address']
 
 def redirect_request_to_region(request_method:str, url:str, region_code:str, payload:dict = None):
     new_api_port = config[region_code]['api_port']

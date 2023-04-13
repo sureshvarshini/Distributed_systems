@@ -1,0 +1,17 @@
+tmux new-session -d -s Shops
+tmux new-window -d -n regions
+tmux new-window -d -n sone
+tmux new-window -d -n s2
+tmux new-window -d -n s3
+
+
+tmux send-keys -t Shops:regions "cd '/cygdrive/c/Users/james/Documents/5th year/Distributed Systems/Distributed_systems'"
+tmux send-keys -t Shops:sone "cd '/cygdrive/c/Users/james/Documents/5th year/Distributed Systems/Distributed_systems/network_emulation'"
+tmux send-keys -t Shops:s2 "cd '/cygdrive/c/Users/james/Documents/5th year/Distributed Systems/Distributed_systems/network_emulation'"
+tmux send-keys -t Shops:s3 "cd '/cygdrive/c/Users/james/Documents/5th year/Distributed Systems/Distributed_systems/network_emulation'"
+
+tmux send-keys -t Shops:sone "python purchase_add.py --shop Cafe1 --region ire --id ire100000 --order latte"
+tmux send-keys -t Shops:2 "python purchase_add.py --shop Cafe1 --region ire --id ire100023 --order latte"
+tmux send-keys -t Shops:3 "python purchase_add.py --shop Cafe1 --region ire --id ire100024 --order latte"
+
+tmux send-keys -t Shops:bash "echo Base Control"
