@@ -56,8 +56,6 @@ def update_user(user_data, id):
             found_user.email = user_data["email"]
         if "name" in user_data:
             found_user.name = user_data["name"]
-        if "points" in user_data:
-            found_user.points = user_data["points"]
         db.session.commit()
     return found_user
 

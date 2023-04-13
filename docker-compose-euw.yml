@@ -2,6 +2,7 @@ version: '2'
 
 networks:
   app-network:
+    external: true
     driver: bridge
 
 services:
@@ -57,10 +58,10 @@ services:
     ports:
       - "80:80"
   
-  app_1:
+  app1euw:
     build: .
-    container_name: app_1
-    command: python -m flask --app latterouter run -h 0.0.0.0 --debug
+    container_name: app1euw
+    command: python -m flask --app latterouter run -h 0.0.0.0 --port=5000 --debug
     environment:
       REGION: 'EUW'
     volumes:
@@ -74,9 +75,9 @@ services:
       - mariadb
       - mongodb
 
-  app_2:
+  app2euw:
     build: .
-    container_name: app_2
+    container_name: app2euw
     command: python -m flask --app latterouter run -h 0.0.0.0 --port=5001 --debug
     environment:
       REGION: 'EUW'

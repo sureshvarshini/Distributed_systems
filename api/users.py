@@ -31,8 +31,10 @@ def points_data(id):
         # Update user
         user_region = id[:3]
         data = request.get_json()
+        print(user_region, flush=True)
         if user_region != REGION:
-            print(request.url)
+            print(REGION, flush=True)
+            print(request.url, flush=True)
             response = redirect_request_to_region(request.method, request.url, user_region, data)
             return response
         user = update_user(data, id)

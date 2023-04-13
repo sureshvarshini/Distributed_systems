@@ -17,8 +17,8 @@ REDIS_PORT = config[REGION]['redis_port']
 def redirect_request_to_region(request_method:str, url:str, region_code:str, payload:dict):
     new_api_port = config[region_code]['api_port']
     new_url = url.replace(str(API_PORT), str(new_api_port))
-    new_url = new_url.replace('localhost', 'host.docker.internal')
-    print(new_url)
+    new_url = new_url.replace('localhost', 'app1' + region_code.lower())
+    print(new_url, flush=True)
     if request_method == 'POST':
         requests.post(new_url, json=payload)
     if request_method == 'PUT':
