@@ -1,5 +1,10 @@
 import argparse
 import requests
+import json
+
+# Load the configuration from the JSON file
+with open("routes.json", "r") as f:
+    config = json.load(f)
 
 if __name__ =="__main__":
     parser = argparse.ArgumentParser()
@@ -13,6 +18,7 @@ if __name__ =="__main__":
     print("Checking points balnce for you...")
 
     #API Request
-    response = requests.get("http://127.0.0.1:5000/user/" + args.id + "/" + "points")
+    region = config[args.region]["api_port"]
+    response = requests.get("http://127.0.0.1:"+region+"/user/" + args.id + "/" + "points")
     data = response.json()
     print(data)

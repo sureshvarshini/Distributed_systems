@@ -16,6 +16,10 @@ from ConcreteBuilder3 import ConcreteBuilder3
 from ConcreteBuilder4 import ConcreteBuilder4
 from ConcreteBuilder5 import ConcreteBuilder5
 
+# Load the configuration from the JSON file
+with open("routes.json", "r") as f:
+    config = json.load(f)
+
 def switchShop(builder, shop, defaultPoint):
     if shop == 1:
         builder.produce_part_a()
@@ -77,15 +81,17 @@ if __name__ == "__main__":
     jsonObject = constructObject(points)
     print(jsonObject)
 
+    region = config[args.region]["api_port"]
+
     # Add points
-    url = "http://127.0.0.1:5000/user/" + args.id + "/" + "points"
+    url = "http://127.0.0.1:"+region+"/user/" + args.id + "/" + "points"
     response = requests.put(url, json=jsonObject)
     data = response.json()
     print(data)
 
     # Update Transaction History
     id = 1  # What should this be?
-    url = 'http://127.0.0.1:5000/transactions/' + str(id)
+    url = 'http://127.0.0.1:'+region+'/transactions/' + str(id)
     response = requests.post(url, json={"user_id": args.id, "order_details": args.order})
     data = response.json()
     print(data)

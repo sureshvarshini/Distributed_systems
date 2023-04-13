@@ -1,6 +1,12 @@
 import argparse
 import requests
 
+import json
+
+# Load the configuration from the JSON file
+with open("routes.json", "r") as f:
+    config = json.load(f)
+
 if __name__ =="__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument('--shop', type=str)
@@ -13,6 +19,7 @@ if __name__ =="__main__":
     print("Getting your transaction history..")
 
     #API Request
-    response = requests.get('http://127.0.0.1:5000/transactions/' +args.id)
+    region = config[args.region]["api_port"]
+    response = requests.get('http://127.0.0.1:'+region+'/transactions/' +args.id)
     data = response.json()
     print(data)
