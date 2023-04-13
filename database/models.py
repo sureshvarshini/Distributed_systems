@@ -62,7 +62,12 @@ def update_user(user_data, id):
 
 def add_transaction(data):
     print('Adding user transactions to Mongodb.', flush=True)
-    now = datetime.now().strftime("%m/%d/%Y, %H:%M:%S")
+    now = ""
+    if "date" not in data:
+        now = datetime.now().strftime("%m/%d/%Y, %H:%M:%S")
+    else:
+        now = data["date"]
+
     item = {'user_id':data['user_id'], 'date': now, 'order_details': data['order_details']}
     id = transactions.insert_one(item)
     return str(id.inserted_id)
