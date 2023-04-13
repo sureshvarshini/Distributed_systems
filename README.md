@@ -32,6 +32,9 @@ IMPLEMENTING A GLOBALLY-ACCESSIBLE DISTRIBUTED SERVICE - Loyalty card scheme in 
 # Running mongodb as docker image - windows
 - Run mariadb image docker command 
     ```docker run --name mongodb -e MONGO_INITDB_ROOT_USERNAME=root  -e MONGO_INITDB_ROOT_PASSWORD=pass -e MONGO_INITDB_DATABASE=db -p 3002:27017 -d docker.io/library/mariadb:10.3```
+
+# Docker command for bringing up multiple compose files
+```docker-compose -f .\docker-compose-euw.yml -f .\docker-compose-eue.yml up --build```
 # Start flask app 
     ```pip install -r requirements.txt```
     ```python -m flask --app latterouter run```
