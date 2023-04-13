@@ -14,7 +14,7 @@ MARIA_PORT = config[REGION]['maria_port']
 MONGO_PORT = config[REGION]['mongo_port']
 REDIS_PORT = config[REGION]['redis_port']
 
-def redirect_request_to_region(request_method:str, url:str, region_code:str, payload:dict):
+def redirect_request_to_region(request_method:str, url:str, region_code:str, payload:dict = None):
     new_api_port = config[region_code]['api_port']
     new_url = url.replace(str(API_PORT), str(new_api_port))
     new_url = new_url.replace('localhost', 'app1' + region_code.lower())

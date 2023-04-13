@@ -51,6 +51,13 @@ def points_data(id):
 @app.route("/users/<string:userid>", methods=["GET"])
 def get_user(userid):
     if request.method == 'GET':
+        user_region = id[:3]
+        print(user_region, flush=True)
+        if user_region != REGION:
+            print(REGION, flush=True)
+            print(request.url, flush=True)
+            response = redirect_request_to_region(request.method, request.url, user_region)
+            return response
         user = get_user_info(userid)
         if user is not None:
             response = jsonify(user.as_dict())
@@ -59,18 +66,29 @@ def get_user(userid):
             response = jsonify({'error': 'User not found'})
             response.status_code = 404
         return response
-    else:
-        response = jsonify({'error': 'Invalid request method'})
-        return response
 
 @app.route("/users/<string:id>/points", methods=["GET", 'PUT'])
 def user_points(id):
+    user_region = id[:3]
     if request.method == 'GET':
+        print(user_region, flush=True)
+        if user_region != REGION:
+            print(REGION, flush=True)
+            print(request.url, flush=True)
+            response = redirect_request_to_region(request.method, request.url, user_region)
+            return response
         response = jsonify(get_user_points(id))
         response.status_code = 200
         return response
     elif request.method == 'PUT':
         data = request.get_json()
+        data = request.get_json()
+        print(user_region, flush=True)
+        if user_region != REGION:
+            print(REGION, flush=True)
+            print(request.url, flush=True)
+            response = redirect_request_to_region(request.method, request.url, user_region, data)
+            return response
         response = update_user_points(id, data)
         if 'error' in response:
             response = jsonify(response)
