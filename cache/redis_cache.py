@@ -1,13 +1,14 @@
 import redis
 import sys
 from datetime import timedelta
-from config import REDIS_PORT
+from config import REDIS_ADDRESS
 
 class RedisClient():
     
     def __init__(self):
         try:
-            self.client = redis.Redis(host="redis", port=REDIS_PORT, socket_timeout=5, charset="utf-8", decode_responses=True)
+            print(REDIS_ADDRESS)
+            self.client = redis.Redis(host=REDIS_ADDRESS["redis_host"], port=REDIS_ADDRESS["redis_port"], socket_timeout=5, charset="utf-8", decode_responses=True)
             ping = self.client.ping()
             if ping is True:
                 print("Connected to REDIS")

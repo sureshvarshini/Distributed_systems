@@ -102,7 +102,6 @@ IMPLEMENTING A GLOBALLY-ACCESSIBLE DISTRIBUTED SERVICE - Loyalty card scheme in 
             "order_details": "latte"
         } 
     ```
-
 # Running simulations with TMUX
 - TMUX comes with any Linux distribution or can be installed with the Cygwin package manager.
 

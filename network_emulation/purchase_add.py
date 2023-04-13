@@ -89,9 +89,9 @@ if __name__ == "__main__":
     data = response.json()
     print(data)
 
-    # Update Transaction History
-    id = 1  # What should this be?
-    url = 'http://127.0.0.1:'+region+'/transactions/' + str(id)
-    response = requests.post(url, json={"user_id": args.id, "order_details": args.order})
+    #Update Transaction History
+    id = 1 #What should this be?
+    url = 'http://127.0.0.1:5000/transactions/' + str(id)
+    response = requests.post(url,json={"user_id": args.id, "order_details": args.order})
     data = response.json()
     print(data)

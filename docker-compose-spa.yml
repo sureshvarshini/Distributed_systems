@@ -1,0 +1,77 @@
+version: '2'
+
+networks:
+  app-network:
+    external: true
+    driver: bridge
+
+services:
+  redis-spa: 
+    image: bitnami/redis:latest
+    container_name: redis-spa
+    volumes:
+      - ./redis-spa:/data
+    ports:
+      - '6381:6381'
+    environment:
+      - ALLOW_EMPTY_PASSWORD=yes
+      - PYTHONUNBUFFERED=1
+    networks:
+      - app-network
+  
+  mongodb-spa:
+    image: mongo:4.0.8
+    container_name: mongodb-spa
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: pass
+      MONGO_INITDB_DATABASE: db
+    volumes:
+      - mongo-data-spa:/data/db
+      - mongo-configdb-spa:/data/configdb
+    ports:
+      - 27020:27020
+    networks:
+      - app-network
+    
+
+  mariadb-spa:
+    image: mariadb
+    container_name: mariadb-spa
+    environment:
+      MYSQL_ROOT_PASSWORD: pass
+      MYSQL_DATABASE: db
+      MARIADB_DATABASE: db
+      MYSQL_USER: root
+    volumes:
+      - mariadb-data-spa:/var/lib/mysql
+    ports:
+      - "3004:3004"
+    restart: always
+    networks:
+      - app-network
+
+  
+  spa-app:
+    build: .
+    container_name: spa-app
+    command: python -m flask --app latterouter run -h 0.0.0.0 --port=5000 --debug
+    environment:
+      REGION: 'SPA'
+    volumes:
+      - .:/app
+    ports:
+      - "5000:5000"
+    networks:
+      - app-network
+    depends_on:
+      - redis-spa
+      - mariadb-spa
+      - mongodb-spa
+
+
+volumes:
+  redis-spa:
+  mongo-data-spa:
+  mongo-configdb-spa:
+  mariadb-data-spa:

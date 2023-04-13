@@ -1,14 +1,77 @@
 {
-    "EUW" : {
-        "api_port": 5000,
-        "maria_port": 3306,
-        "mongo_port": 27017,
-        "redis_port": 6379
-    },
-    "EUE" : {
+    "IRE" : {
         "api_port": 5010,
-        "maria_port": 3306,
-        "mongo_port": 27017,
-        "redis_port": 6379
+        "maria_address": {
+            "maria_host": "mariadb-ire",
+            "maria_port": 3306
+        },
+        "mongo_address": {
+            "mongo_host": "mongodb-ire",
+            "mongo_port": 27017
+        },
+        "redis_address": {
+            "redis_port": 6379,
+            "redis_host": "redis-ire"
+        }
+    },
+    "FRA" : {
+        "api_port": 5011,
+        "maria_address": {
+            "maria_host": "mariadb-fra",
+            "maria_port": 3306
+        },
+        "mongo_address": {
+            "mongo_host": "mongodb-fra",
+            "mongo_port": 27017
+        },
+        "redis_address": {
+            "redis_port": 6379,
+            "redis_host": "redis-fra"
+        }
+    },
+    "SPA" : {
+        "api_port": 5000,
+        "maria_address": {
+            "maria_host": "mariadb-spa",
+            "maria_port": 3306
+        },
+        "mongo_address": {
+            "mongo_host": "mongodb-spa",
+            "mongo_port": 27017
+        },
+        "redis_address": {
+            "redis_port": 6379,
+            "redis_host": "redis-spa"
+        }
+    },
+    "IND" : {
+        "api_port": 5012,
+        "maria_address": {
+            "maria_host": "mariadb-ind",
+            "maria_port": 3306
+        },
+        "mongo_address": {
+            "mongo_host": "mongodb-ind",
+            "mongo_port": 27017
+        },
+        "redis_address": {
+            "redis_port": 6379,
+            "redis_host": "redis-ind"
+        }
+    },
+    "ROM" : {
+        "api_port": 5013,
+        "maria_address": {
+            "maria_host": "mariadb-rom",
+            "maria_port": 3306
+        },
+        "mongo_address": {
+            "mongo_host": "mongodb-rom",
+            "mongo_port": 27017
+        },
+        "redis_address": {
+            "redis_port": 6379,
+            "redis_host": "redis-rom"
+        }
     }
 }
