@@ -81,3 +81,20 @@ IMPLEMENTING A GLOBALLY-ACCESSIBLE DISTRIBUTED SERVICE - Loyalty card scheme in 
 
 # Docker command for bringing up multiple compose files
 ```docker-compose -f .\docker-compose-euw.yml -f .\docker-compose-eue.yml up --build```
+
+
+# Running simulations with TMUX
+- TMUX comes with any Linux distribution or can be installed with the Cygwin package manager.
+
+- Open a Cygwin terminal and cd to the network_emulation directory.
+
+- Run the command: ```.scenarios/<scenario_name>```
+
+Where secenario_name is the filename of the selected scenario definition. e.g. base_scenario, this will start a new tmux session and the simulation will start to process.
+
+- Run the command ```tmux attach``` to enter the tmux session.
+
+- Press ctrl+b then w to observe all the windows in a list. A smaller view will show what is being processed on the current window. This will be the occurring transaction.
+
+- To exit tmux, select a window in the list and enter the command ```tmux kill-server```. This will exit and kill the simulation and return you to the normal terminal.
+
