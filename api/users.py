@@ -51,8 +51,7 @@ def points_data(id):
 @app.route("/users/<string:userid>", methods=["GET"])
 def get_user(userid):
     if request.method == 'GET':
-        user_region = id[:3]
-        print(user_region, flush=True)
+        user_region = userid[:3]
         if user_region != REGION:
             print(REGION, flush=True)
             print(request.url, flush=True)
