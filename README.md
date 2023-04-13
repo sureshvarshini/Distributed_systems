@@ -13,15 +13,40 @@ IMPLEMENTING A GLOBALLY-ACCESSIBLE DISTRIBUTED SERVICE - Loyalty card scheme in 
     ```docker network create -d bridge app-network```
 - Run docker build command for each region .yml file. This command will install all the modules required by the application. *(Do this command for all specified regions.)*.
 
-    ```docker-compose -f docker-compose-<region>.yml build```
+    ```docker-compose -f .\docker-compose-ire.yml -f .\docker-compose-fra.yml -f .\docker-compose-ind.yml -f .\docker-compose-spa.yml -f .\docker-compose-rom.yml build```
 - Compose up to start the application. *(Do this command for all specified regions.)*.
 
-    ```docker-compose -f docker-compose-<region>.yml up```
+    ```docker-compose -f .\docker-compose-ire.yml -f .\docker-compose-fra.yml -f .\docker-compose-ind.yml -f .\docker-compose-spa.yml -f .\docker-compose-rom.yml up```
 
     You should be able see all the containers up and application running at ports.
 - Compose down to stop the application. *(Do this command for all specified regions.)*.
 
-    ```docker-compose -f docker-compose-<region>.yml down```
+    ```docker-compose -f .\docker-compose-ire.yml -f .\docker-compose-fra.yml -f .\docker-compose-ind.yml -f .\docker-compose-spa.yml -f .\docker-compose-rom.yml down```
+
+# Server Home Page - by region
+## Ireland
+- *http://localhost:5010/index*
+
+        IRE - Latte
+## France
+- *http://localhost:5011/index*
+
+        FRA - Latte
+
+## Spain
+- *http://localhost:5000/index*
+
+        SPA - Latte
+
+## India
+- *http://localhost:5012/index*
+
+        IND - Latte
+
+## Romania
+- *http://localhost:5013/index*
+
+        ROM - Latte
 
 # Exposed APIs
 ## User registration management system
@@ -34,8 +59,7 @@ IMPLEMENTING A GLOBALLY-ACCESSIBLE DISTRIBUTED SERVICE - Loyalty card scheme in 
         {
             "email": "test-user-6@example.com",
             "name": "test-user-ire006",
-            "user_id": "ire006",
-            "region": "EUW/EUE"
+            "region": "IRE/FRA/SPA/IND/ROM"
         }  
     ```   
     - Sample PUT payload:
@@ -78,10 +102,6 @@ IMPLEMENTING A GLOBALLY-ACCESSIBLE DISTRIBUTED SERVICE - Loyalty card scheme in 
             "order_details": "latte"
         } 
     ```
-
-# Docker command for bringing up multiple compose files
-```docker-compose -f .\docker-compose-euw.yml -f .\docker-compose-eue.yml up --build```
-
 
 # Running simulations with TMUX
 - TMUX comes with any Linux distribution or can be installed with the Cygwin package manager.
