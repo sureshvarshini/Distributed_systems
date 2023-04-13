@@ -52,7 +52,7 @@ def switchBuilder(region, director):
 
 
 def constructObject(points):
-    jsonObject = {"action": "<deduct>", "points": points}
+    jsonObject = {"action": "add", "points": points}
     return jsonObject
 
 

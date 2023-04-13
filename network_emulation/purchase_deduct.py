@@ -33,7 +33,7 @@ def switch(builder, region, defaultPoint):
 
 
 def constructObject(points):
-    jsonObject = {"action": "<add>", "points": points}
+    jsonObject = {"action": "deduct", "points": points}
     return jsonObject
 
 
