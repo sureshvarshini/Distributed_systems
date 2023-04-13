@@ -1,40 +1,83 @@
 # Distributed_systems
 IMPLEMENTING A GLOBALLY-ACCESSIBLE DISTRIBUTED SERVICE - Loyalty card scheme in global café
 
-# Running redis as docker image - windows
+# Running the application through docker
 - Install docker
-- Run redis image docker command (Needs to done only once)
+    - For fresh start on prevously installed docker.
 
-    ```docker run --name my-redis -p 6379:6379 -d redis```
-- To get inside redis-container
-   
-    ```docker exec -it my-redis sh```
-- To run redis command line
+        ```docker system prune```
+        
+        *NOTE: This command will remove all previous images and containers. Execute with caution.*
+- Create docker network.
 
-    ```redis-cli```
-- To stop redis, fist list all containers
+    ```docker network create -d bridge app-network```
+- Run docker build command for each region .yml file. This command will install all the modules required by the application. *(Do this command for all specified regions.)*.
 
-    ``` docker ps -a```
+    ```docker-compose -f docker-compose-<region>.yml build```
+- Compose up to start the application. *(Do this command for all specified regions.)*.
+
+    ```docker-compose -f docker-compose-<region>.yml up```
+
+    You should be able see all the containers up and application running at ports.
+- Compose down to stop the application. *(Do this command for all specified regions.)*.
+
+    ```docker-compose -f docker-compose-<region>.yml down```
+
+# Exposed APIs
+## User registration management system
+- */users/{id}* -> (POST, PUT, GET)
+
+    - Add, update and fetch consumer detials by id
+    - Sample POST payload:
     
-    and stop that container ID
+    ```json
+        {
+            "email": "test-user-6@example.com",
+            "name": "test-user-ire006",
+            "user_id": "ire006",
+            "region": "EUW/EUE"
+        }  
+    ```   
+    - Sample PUT payload:
 
-    ```docker stop <container-ID>```
-- To restart redis server
+    ```json
+        {
+            "name": "test-user-ire006-new-name",
+            "user_id": "ire006"
+        }  
+    ```  
+## Loyalty points management system
+- */users/{id}/points* -> (GET, PUT)
+    - Fetch and update loyalty points by consumer id
 
-    ```docker start <container-ID>```
-    
-# Running mariadb as docker image - windows
-- Install docker
-- Run mariadb image docker command 
+    - Sample PUT payload to add points:
 
-    ```docker run --name mariadb -e MYSQL_ROOT_PASSWORD=pass  -e MARIADB_DATABASE=db -p 3001:3306 -d docker.io/library/mariadb:10.3```
+    ```json
+        {
+            "action": "add",
+            "points": 13
+        } 
+    ```
+    - Sample PUT payload to deduct points:
 
-# Running mongodb as docker image - windows
-- Run mariadb image docker command 
-    ```docker run --name mongodb -e MONGO_INITDB_ROOT_USERNAME=root  -e MONGO_INITDB_ROOT_PASSWORD=pass -e MONGO_INITDB_DATABASE=db -p 3002:27017 -d docker.io/library/mariadb:10.3```
+    ```json
+        {
+            "action": "deduct",
+            "points": 7
+        } 
+    ```
+## Transaction history management system
+- */transactions/{id}* ->  (GET, POST)
+    - Fetch and add consumer order transactions
+
+    - Sample POST payload:
+
+    ```json
+        {
+            "user_id": "ire004",
+            "order_details": "latte"
+        } 
+    ```
 
 # Docker command for bringing up multiple compose files
 ```docker-compose -f .\docker-compose-euw.yml -f .\docker-compose-eue.yml up --build```
-# Start flask app 
-    ```pip install -r requirements.txt```
-    ```python -m flask --app latterouter run```
