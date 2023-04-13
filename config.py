@@ -7,11 +7,11 @@ import requests
 with open("routes.json", "r") as f:
     config = json.load(f)
 
-AVAILABLE_REGIONS = ('EUW', 'EUE')
+AVAILABLE_REGIONS = ('IRE', 'FRA', 'SPA', 'IND', 'ROM')
 REGION = os.environ.get("REGION")
 API_PORT = config[REGION]['api_port']
-MARIA_PORT = config[REGION]['maria_port']
-MONGO_PORT = config[REGION]['mongo_port']
+MARIA_ADDRESS = config[REGION]['maria_address']
+MONGO_ADDRESS = config[REGION]['mongo_address']
 REDIS_ADDRESS = config[REGION]['redis_address']
 
 def redirect_request_to_region(request_method:str, url:str, region_code:str, payload:dict = None):

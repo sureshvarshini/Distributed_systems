@@ -6,10 +6,11 @@ from pymongo import MongoClient, errors
 from datetime import datetime
 import uuid
 from cache.redis_cache import RedisClient
-from config import MONGO_PORT, REGION
+from config import MONGO_ADDRESS, REGION
 
 db = SQLAlchemy()
-client = MongoClient(host='mongodb', port=MONGO_PORT, username='root', password='pass')
+print(MONGO_ADDRESS)
+client = MongoClient(host=MONGO_ADDRESS['mongo_host'], port=MONGO_ADDRESS['mongo_port'], username='root', password='pass')
 # Connect to database - db
 mdb = client["db"]
 # Connect to collections - transactions

@@ -6,78 +6,72 @@ networks:
     driver: bridge
 
 services:
-  redis-ire: 
+  redis-ind: 
     image: bitnami/redis:latest
-    container_name: redis-ire
+    container_name: redis-ind
     volumes:
-      - ./redis-ire:/data
+      - ./redis-ind:/data
     ports:
-      - '6379:6379'
+      - '6383:6383'
     environment:
       - ALLOW_EMPTY_PASSWORD=yes
       - PYTHONUNBUFFERED=1
     networks:
       - app-network
   
-  mongodb-ire:
+  mongodb-ind:
     image: mongo:4.0.8
-    container_name: mongodb-ire
+    container_name: mongodb-ind
     environment:
       MONGO_INITDB_ROOT_USERNAME: root
       MONGO_INITDB_ROOT_PASSWORD: pass
       MONGO_INITDB_DATABASE: db
     volumes:
-      - mongo-data-ire:/data/db
-      - mongo-configdb-ire:/data/configdb
+      - mongo-data-ind:/data/db
+      - mongo-configdb-ind:/data/configdb
     ports:
-      - 27018:27018
+      - 27022:27022
     networks:
       - app-network
     
 
-  mariadb-ire:
+  mariadb-ind:
     image: mariadb
-    container_name: mariadb-ire
+    container_name: mariadb-ind
     environment:
       MYSQL_ROOT_PASSWORD: pass
       MYSQL_DATABASE: db
       MARIADB_DATABASE: db
       MYSQL_USER: root
     volumes:
-      - mariadb-data-ire:/var/lib/mysql
+      - mariadb-data-ind:/var/lib/mysql
     ports:
-      - "3001:3001"
+      - "3007:3007"
     restart: always
     networks:
       - app-network
 
-  nginx:
-    image: nginx:latest
-    container_name: nginx
-    volumes:
-      - ./load_balancer/nginx.conf:/etc/nginx/nginx.conf:ro
-    ports:
-      - "80:80"
   
-  ire-app:
+  ind-app:
     build: .
-    container_name: ire-app
-    command: python -m flask --app latterouter run -h 0.0.0.0 --port=5010 --debug
+    container_name: ind-app
+    command: python -m flask --app latterouter run -h 0.0.0.0 --port=5012 --debug
     environment:
-      REGION: 'IRE'
+      REGION: 'IND'
     volumes:
       - .:/app
     ports:
-      - "5010:5010"
+      - "5012:5012"
     networks:
       - app-network
     depends_on:
-      - redis-ire
-      - mariadb-ire
-      - mongodb-ire
+      - redis-ind
+      - mariadb-ind
+      - mongodb-ind
+
 
 volumes:
-  redis-ire:
-  mongo-data-ire:
-  mongo-configdb-ire:
-  mariadb-data-ire:
+  redis-ind:
+  mongo-data-ind:
+  mongo-configdb-ind:
+  mariadb-data-ind:

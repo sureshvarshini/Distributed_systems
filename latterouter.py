@@ -1,11 +1,12 @@
 from flask import Flask
 from database.models import db
-from config import MARIA_PORT
+from config import MARIA_ADDRESS
+import os
 
 # App instance
 app = Flask(__name__)
-
-app.config['SQLALCHEMY_DATABASE_URI'] = f'mysql+pymysql://root:pass@mariadb:{MARIA_PORT}/db'
+print(MARIA_ADDRESS)
+app.config['SQLALCHEMY_DATABASE_URI'] = f'mysql+pymysql://root:pass@{MARIA_ADDRESS["maria_host"]}:{MARIA_ADDRESS["maria_port"]}/db'
 from api import api
 from cache.redis_cache import RedisClient
 app.register_blueprint(api, url_prefix="/api")
@@ -22,5 +23,5 @@ print(app.url_map)
 @app.route('/')
 @app.route('/index')
 def index():
-    return "Latte"
+    return os.environ.get("REGION") + " - Latte"
         

@@ -2,15 +2,15 @@ version: '2'
 
 networks:
   app-network:
-    #external: true
+    external: true
     driver: bridge
 
 services:
-  redis-fran: 
+  redis-fra: 
     image: bitnami/redis:latest
-    container_name: redis-fran
+    container_name: redis-fra
     volumes:
-      - ./redis-fran:/data
+      - ./redis-fra:/data
     ports:
       - '6380:6380'
     environment:
@@ -19,49 +19,45 @@ services:
     networks:
       - app-network
   
-  mongodb-fran:
+  mongodb-fra:
     image: mongo:4.0.8
-    container_name: mongodb-fran
+    container_name: mongodb-fra
     environment:
       MONGO_INITDB_ROOT_USERNAME: root
       MONGO_INITDB_ROOT_PASSWORD: pass
       MONGO_INITDB_DATABASE: db
     volumes:
-      #- mongo-data2:/data/db
-      - ./data/db-fran:/data/db
-      #- mongo-configdb:/data/configdb
+      - mongo-data-fra:/data/db
+      - mongo-configdb-fra:/data/configdb
     ports:
-      - 3002:3002
       - 27019:27019
     networks:
       - app-network
     
 
-  mariadb-fran:
+  mariadb-fra:
     image: mariadb
-    container_name: mariadb-fran
+    container_name: mariadb-fra
     environment:
       MYSQL_ROOT_PASSWORD: pass
       MYSQL_DATABASE: db
       MARIADB_DATABASE: db
       MYSQL_USER: root
     volumes:
-      #- mariadb-data-fran:/var/lib/mysql
-      - ./mariadb-fran:/var/lib/mysq
+      - mariadb-data-fra:/var/lib/mysql
     ports:
       - "3003:3003"
-      - "3311:3311"
     restart: always
     networks:
       - app-network
 
   
-  fran-app:
+  fra-app:
     build: .
-    container_name: fran-app
+    container_name: fra-app
     command: python -m flask --app latterouter run -h 0.0.0.0 --port=5011 --debug
     environment:
-      REGION: 'EUW'
+      REGION: 'FRA'
     volumes:
       - .:/app
     ports:
@@ -69,12 +65,13 @@ services:
     networks:
       - app-network
     depends_on:
-      - redis-fran
-      - mariadb-fran
-      - mongodb-fran
+      - redis-fra
+      - mariadb-fra
+      - mongodb-fra
 
 
 volumes:
-  mongo-data:
-  mongo-configdb:
-  mariadb-data:
+  redis-fra:
+  mongo-data-fra:
+  mongo-configdb-fra:
+  mariadb-data-fra:
