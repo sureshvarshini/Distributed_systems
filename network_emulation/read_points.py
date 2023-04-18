@@ -3,7 +3,7 @@ import requests
 import json
 
 # Load the configuration from the JSON file
-with open("routes.json", "r") as f:
+with open("../routes.json", "r") as f:
     config = json.load(f)
 
 if __name__ =="__main__":
@@ -15,10 +15,10 @@ if __name__ =="__main__":
     
     print("Hello! Welcome to "+args.shop+" in the "+args.region+" region!")
 
-    print("Checking points balnce for you...")
+    print("Checking points balance for you...")
 
     #API Request
     region = config[args.region]["api_port"]
-    response = requests.get("http://127.0.0.1:"+region+"/user/" + args.id + "/" + "points")
+    response = requests.get("http://127.0.0.1:"+str(region)+"/users/" + args.id + "/" + "points")
     data = response.json()
     print(data)

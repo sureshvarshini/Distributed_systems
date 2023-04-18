@@ -19,7 +19,7 @@ if __name__ =="__main__":
 
     #API Request
     region = config[args.region]["api_port"]
-    response = requests.get("http://127.0.0.1:"+region+"/user/" + args.id,{
+    response = requests.get("http://127.0.0.1:"+str(region)+"/users/" + args.id,{
             "email": "",
             "name": "",
             "user_id": "",

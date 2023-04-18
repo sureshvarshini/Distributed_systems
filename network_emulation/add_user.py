@@ -3,14 +3,13 @@ import requests
 import json
 
 # Load the configuration from the JSON file
-with open("routes.json", "r") as f:
+with open("../routes.json", "r") as f:
     config = json.load(f)
 
 if __name__ =="__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument('--shop', type=str)
     parser.add_argument('--region', type=str)
-    parser.add_argument('--id', type=str)
     parser.add_argument('--email', type=str)
     parser.add_argument('--name', type=str)
     args = parser.parse_args()
@@ -21,10 +20,9 @@ if __name__ =="__main__":
 
     #API Request
     region = config[args.region]["api_port"]
-    response = requests.get("http://127.0.0.1:"+region+"/user/" + args.id,{
+    response = requests.post("http://127.0.0.1:" + str(region) + "/users/0", json={
             "email": args.email,
             "name": args.name,
-            "user_id": args.id,
             "region": args.region
         }  )
     data = response.json()

@@ -7,7 +7,7 @@ from typing import Any
 import json
 
 # Load the configuration from the JSON file
-with open("routes.json", "r") as f:
+with open("../routes.json", "r") as f:
     config = json.load(f)
 
 import sys
@@ -17,15 +17,15 @@ from ConcreteBuilder1 import ConcreteBuilder1
 
 
 def switch(builder, region, defaultPoint):
-    if region == "ire":
+    if region == "IRE":
         builder.produce_part_a()
-    if region == "fran":
+    if region == "FRA":
         builder.produce_part_b()
-    if region == "ind":
+    if region == "IND":
         builder.produce_part_c()
-    if region == "rom":
+    if region == "ROM":
         builder.produce_part_d()
-    if region == "spa":
+    if region == "SPA":
         builder.produce_part_a()
         builder.produce_part_a()
 
@@ -65,7 +65,7 @@ if __name__ == "__main__":
 
     region = config[args.region]["api_port"]
 
-    url = "http://127.0.0.1:"+region+"/user/" + args.id + "/" + "points"
+    url = "http://127.0.0.1:"+str(region)+"/users/" + args.id + "/" + "points"
     # may need to add data instead of json
     response = requests.put(url,json=jsonObject)
     data = response.json()
@@ -73,7 +73,7 @@ if __name__ == "__main__":
 
     #Update Transaction History
     id = 1 #What should this be?
-    url = 'http://127.0.0.1:'+region+'/transactions/' + str(id)
+    url = 'http://127.0.0.1:'+str(region)+'/transactions/' + str(id)
     response = requests.post(url,json={"user_id": args.id, "order_details": args.order})
     data = response.json()
     print(data)

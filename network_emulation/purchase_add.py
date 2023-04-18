@@ -17,7 +17,7 @@ from ConcreteBuilder4 import ConcreteBuilder4
 from ConcreteBuilder5 import ConcreteBuilder5
 
 # Load the configuration from the JSON file
-with open("routes.json", "r") as f:
+with open("../routes.json", "r") as f:
     config = json.load(f)
 
 def switchShop(builder, shop, defaultPoint):
@@ -37,15 +37,15 @@ def switchShop(builder, shop, defaultPoint):
 
 
 def switchBuilder(region, director):
-    if region == "ire":
+    if region == "IRE":
         director.builder = ConcreteBuilder1()
-    if region == "fran":
+    if region == "FRA":
         director.builder = ConcreteBuilder2()
-    if region == "ind":
+    if region == "IND":
         director.builder = ConcreteBuilder3()
-    if region == "rom":
+    if region == "ROM":
         director.builder = ConcreteBuilder4()
-    if region == "spa":
+    if region == "SPA":
         director.builder = ConcreteBuilder5()
 
     return director.builder
@@ -79,19 +79,19 @@ if __name__ == "__main__":
     defaultPoints = 1
     points = switchShop(director.builder, args.shop, defaultPoints)
     jsonObject = constructObject(points)
-    print(jsonObject)
+    #print(jsonObject)
 
     region = config[args.region]["api_port"]
 
     # Add points
-    url = "http://127.0.0.1:"+region+"/user/" + args.id + "/" + "points"
+    url = "http://127.0.0.1:"+str(region)+"/users/" + args.id + "/" + "points"
     response = requests.put(url, json=jsonObject)
     data = response.json()
     print(data)
 
     #Update Transaction History
     id = 1 #What should this be?
-    url = 'http://127.0.0.1:5000/transactions/' + str(id)
+    url = 'http://127.0.0.1:'+str(region)+'/transactions/' + str(id)
     response = requests.post(url,json={"user_id": args.id, "order_details": args.order})
     data = response.json()
     print(data)
