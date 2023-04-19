@@ -35,7 +35,7 @@ def points_data(id):
         if user_region != REGION:
             print(REGION, flush=True)
             print(request.url, flush=True)
-            response = redirect_request_to_region(request.method, request.url, user_region, data)
+            response = redirect_request_to_region(request.method, request.url, user_region, REGION, data)
             return response
         user = update_user(data, id)
         if user is not None:
@@ -55,8 +55,9 @@ def get_user(userid):
         if user_region != REGION:
             print(REGION, flush=True)
             print(request.url, flush=True)
-            response = redirect_request_to_region(request.method, request.url, user_region)
+            response = redirect_request_to_region(request.method, request.url, user_region, REGION)
             return response
+        print(request.url, flush=True)
         user = get_user_info(userid)
         if user is not None:
             response = jsonify(user.as_dict())
@@ -74,7 +75,7 @@ def user_points(id):
         if user_region != REGION:
             print(REGION, flush=True)
             print(request.url, flush=True)
-            response = redirect_request_to_region(request.method, request.url, user_region)
+            response = redirect_request_to_region(request.method, request.url, user_region, REGION)
             return response
         response = jsonify(get_user_points(id))
         response.status_code = 200
@@ -86,7 +87,7 @@ def user_points(id):
         if user_region != REGION:
             print(REGION, flush=True)
             print(request.url, flush=True)
-            response = redirect_request_to_region(request.method, request.url, user_region, data)
+            response = redirect_request_to_region(request.method, request.url, user_region, REGION, data)
             return response
         response = update_user_points(id, data)
         if 'error' in response:

@@ -25,26 +25,26 @@ IMPLEMENTING A GLOBALLY-ACCESSIBLE DISTRIBUTED SERVICE - Loyalty card scheme in 
 
 # Server Home Page - by region
 ## Ireland
-- *http://localhost:5010/index*
+- *http://localhost:80/index*
 
         IRE - Latte
 ## France
-- *http://localhost:5011/index*
+- *http://localhost:81/index*
 
         FRA - Latte
 
 ## Spain
-- *http://localhost:5000/index*
+- *http://localhost:84/index*
 
         SPA - Latte
 
 ## India
-- *http://localhost:5012/index*
+- *http://localhost:82/index*
 
         IND - Latte
 
 ## Romania
-- *http://localhost:5013/index*
+- *http://localhost:83/index*
 
         ROM - Latte
 

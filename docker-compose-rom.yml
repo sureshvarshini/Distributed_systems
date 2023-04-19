@@ -51,10 +51,20 @@ services:
     networks:
       - app-network
 
-  
-  rom-app:
+  nginx-rom:
+    build: ./load_balancer/romania
+    container_name: nginx-rom
+    ports:
+      - "83:83"
+    networks:
+      - app-network
+    depends_on:
+      - rom-app-1
+      - rom-app-2  
+
+  rom-app-1:
     build: .
-    container_name: rom-app
+    container_name: rom-app-1
     command: python -m flask --app latterouter run -h 0.0.0.0 --port=5013 --debug
     environment:
       REGION: 'ROM'
@@ -62,6 +72,23 @@ services:
       - .:/app
     ports:
       - "5013:5013"
+    networks:
+      - app-network
+    depends_on:
+      - redis-rom
+      - mariadb-rom
+      - mongodb-rom
+
+  rom-app-2:
+    build: .
+    container_name: rom-app-2
+    command: python -m flask --app latterouter run -h 0.0.0.0 --port=5013 --debug
+    environment:
+      REGION: 'ROM'
+    volumes:
+      - .:/app
+    ports:
+      - "5113:5113"
     networks:
       - app-network
     depends_on:

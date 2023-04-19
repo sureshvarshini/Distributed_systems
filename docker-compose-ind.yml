@@ -51,10 +51,20 @@ services:
     networks:
       - app-network
 
+  nginx-ind:
+    build: ./load_balancer/india
+    container_name: nginx-ind
+    ports:
+      - "82:82"
+    networks:
+      - app-network
+    depends_on:
+      - ind-app-1
+      - ind-app-2
   
-  ind-app:
+  ind-app-1:
     build: .
-    container_name: ind-app
+    container_name: ind-app-1
     command: python -m flask --app latterouter run -h 0.0.0.0 --port=5012 --debug
     environment:
       REGION: 'IND'
@@ -69,6 +79,22 @@ services:
       - mariadb-ind
       - mongodb-ind
 
+  ind-app-2:
+    build: .
+    container_name: ind-app-2
+    command: python -m flask --app latterouter run -h 0.0.0.0 --port=5112 --debug
+    environment:
+      REGION: 'IND'
+    volumes:
+      - .:/app
+    ports:
+      - "5112:5112"
+    networks:
+      - app-network
+    depends_on:
+      - redis-ind
+      - mariadb-ind
+      - mongodb-ind
 
 volumes:
   redis-ind:

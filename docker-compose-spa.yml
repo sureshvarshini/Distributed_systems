@@ -51,10 +51,20 @@ services:
     networks:
       - app-network
 
+  nginx-spa:
+    build: ./load_balancer/spain
+    container_name: nginx-spa
+    ports:
+      - "84:84"
+    networks:
+      - app-network
+    depends_on:
+      - spa-app-1
+      - spa-app-2 
   
-  spa-app:
+  spa-app-1:
     build: .
-    container_name: spa-app
+    container_name: spa-app-1
     command: python -m flask --app latterouter run -h 0.0.0.0 --port=5000 --debug
     environment:
       REGION: 'SPA'
@@ -62,6 +72,23 @@ services:
       - .:/app
     ports:
       - "5000:5000"
+    networks:
+      - app-network
+    depends_on:
+      - redis-spa
+      - mariadb-spa
+      - mongodb-spa
+
+  spa-app-2:
+    build: .
+    container_name: spa-app-2
+    command: python -m flask --app latterouter run -h 0.0.0.0 --port=5100 --debug
+    environment:
+      REGION: 'SPA'
+    volumes:
+      - .:/app
+    ports:
+      - "5100:5100"
     networks:
       - app-network
     depends_on:

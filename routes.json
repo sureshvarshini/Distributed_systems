@@ -1,6 +1,6 @@
 {
     "IRE" : {
-        "api_port": 5010,
+        "api_port": 80,
         "maria_address": {
             "maria_host": "mariadb-ire",
             "maria_port": 3306
@@ -15,7 +15,7 @@
         }
     },
     "FRA" : {
-        "api_port": 5011,
+        "api_port": 81,
         "maria_address": {
             "maria_host": "mariadb-fra",
             "maria_port": 3306
@@ -30,7 +30,7 @@
         }
     },
     "SPA" : {
-        "api_port": 5000,
+        "api_port": 84,
         "maria_address": {
             "maria_host": "mariadb-spa",
             "maria_port": 3306
@@ -45,7 +45,7 @@
         }
     },
     "IND" : {
-        "api_port": 5012,
+        "api_port": 82,
         "maria_address": {
             "maria_host": "mariadb-ind",
             "maria_port": 3306
@@ -60,7 +60,7 @@
         }
     },
     "ROM" : {
-        "api_port": 5013,
+        "api_port": 83,
         "maria_address": {
             "maria_host": "mariadb-rom",
             "maria_port": 3306
