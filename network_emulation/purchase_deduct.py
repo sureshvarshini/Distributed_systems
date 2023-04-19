@@ -39,13 +39,12 @@ def constructObject(points):
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
-    parser.add_argument('--shop', type=str)
     parser.add_argument('--region', type=str)
     parser.add_argument('--id', type=str)
     parser.add_argument('--order', type=str)
     args = parser.parse_args()
 
-    print("Hello! Welcome to " + args.shop + " in the " + args.region + " region!")
+    print("Hello!")
 
     print("Here's a " + args.order)
     print("Deducting points for your purchase...")
@@ -75,5 +74,6 @@ if __name__ == "__main__":
     id = 1 #What should this be?
     url = 'http://localhost:'+str(region)+'/transactions/' + str(id)
     response = requests.post(url,json={"user_id": args.id, "order_details": args.order})
-    data = response.json()
-    print(data)
+    print(response)
+    #data = response.json()
+    #print(data)

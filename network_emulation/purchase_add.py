@@ -21,15 +21,15 @@ with open("../routes.json", "r") as f:
     config = json.load(f)
 
 def switchShop(builder, shop, defaultPoint):
-    if shop == 1:
+    if shop == "Cafe1":
         builder.produce_part_a()
-    if shop == 2:
+    if shop == "Cafe2":
         builder.produce_part_b()
-    if shop == 3:
+    if shop == "Cafe3":
         builder.produce_part_c()
-    if shop == 4:
+    if shop == "Cafe4":
         builder.produce_part_d()
-    if shop == 5:
+    if shop == "Cafe5":
         builder.produce_part_a()
         builder.produce_part_a()
 
@@ -58,13 +58,13 @@ def constructObject(points):
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
-    parser.add_argument('--shop', type=str)
+    parser.add_argument('--shop',type=str)
     parser.add_argument('--region', type=str)
     parser.add_argument('--id', type=str)
     parser.add_argument('--order', type=str)
     args = parser.parse_args()
 
-    print("Hello! Welcome to " + args.shop + " in the " + args.region + " region!")
+    print("Hello!")
 
     print("Here's a " + args.order)
     print("Adding points for your purchase...")
@@ -93,5 +93,6 @@ if __name__ == "__main__":
     id = 1 #What should this be?
     url = 'http://localhost:'+str(region)+'/transactions/' + str(id)
     response = requests.post(url,json={"user_id": args.id, "order_details": args.order})
-    data = response.json()
-    print(data)
+    print(response)
+    #data = response.json()
+    #print(data)
