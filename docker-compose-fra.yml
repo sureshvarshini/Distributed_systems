@@ -51,10 +51,20 @@ services:
     networks:
       - app-network
 
+  nginx-fra:
+    build: ./load_balancer/france
+    container_name: nginx-fra
+    ports:
+      - "81:81"
+    networks:
+      - app-network
+    depends_on:
+      - fra-app-1
+      - fra-app-2
   
-  fra-app:
+  fra-app-1:
     build: .
-    container_name: fra-app
+    container_name: fra-app-1
     command: python -m flask --app latterouter run -h 0.0.0.0 --port=5011 --debug
     environment:
       REGION: 'FRA'
@@ -62,6 +72,23 @@ services:
       - .:/app
     ports:
       - "5011:5011"
+    networks:
+      - app-network
+    depends_on:
+      - redis-fra
+      - mariadb-fra
+      - mongodb-fra
+
+  fra-app-2:
+    build: .
+    container_name: fra-app-2
+    command: python -m flask --app latterouter run -h 0.0.0.0 --port=5111 --debug
+    environment:
+      REGION: 'FRA'
+    volumes:
+      - .:/app
+    ports:
+      - "5111:5111"
     networks:
       - app-network
     depends_on:

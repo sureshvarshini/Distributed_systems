@@ -15,6 +15,7 @@ MONGO_ADDRESS = config[REGION]['mongo_address']
 REDIS_ADDRESS = config[REGION]['redis_address']
 
 def redirect_request_to_region(request_method:str, url:str, region_code:str, payload:dict = None):
+    print('Data not found in current region, re-directing.', flush=True)
     new_api_port = config[region_code]['api_port']
     new_url = url.replace(str(API_PORT), str(new_api_port))
     new_url = new_url.replace('localhost', region_code.lower() + '-app')
