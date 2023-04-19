@@ -8,7 +8,6 @@ with open("../routes.json", "r") as f:
 
 if __name__ =="__main__":
     parser = argparse.ArgumentParser()
-    parser.add_argument('--shop', type=str)
     parser.add_argument('--region', type=str)
     parser.add_argument('--id', type=str)
     parser.add_argument('--name', type=str)
@@ -16,7 +15,7 @@ if __name__ =="__main__":
     parser.add_argument('--change', type=str)
     args = parser.parse_args()
     
-    print("Hello! Welcome to "+args.shop+" in the "+args.region+" region!")
+    print("Hello!")
 
     print("Updating your account details to the system...")
 
@@ -32,5 +31,6 @@ if __name__ =="__main__":
         json_o["name"] = args.name
         json_o["email"] = args.email
 
-    response = requests.put(f"http://127.0.0.1:{str(region)}/users/{args.id}", json=json_o)
-    print(response.json())
+    response = requests.put(f"http://localhost:{str(region)}/users/{args.id}", json=json_o)
+    print(response)
+    #print(response.json())
