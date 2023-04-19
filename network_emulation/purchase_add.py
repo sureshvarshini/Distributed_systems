@@ -68,7 +68,6 @@ if __name__ == "__main__":
 
     print("Here's a " + args.order)
     print("Adding points for your purchase...")
-    print("Updating transaction history")
 
     # API Request
     # add business logic points, with json payload
@@ -84,14 +83,15 @@ if __name__ == "__main__":
     region = config[args.region]["api_port"]
 
     # Add points
-    url = "http://127.0.0.1:"+str(region)+"/users/" + args.id + "/" + "points"
+    url = "http://localhost:"+str(region)+"/users/" + args.id + "/" + "points"
     response = requests.put(url, json=jsonObject)
     data = response.json()
     print(data)
 
+    print("Updating transaction history...")
     #Update Transaction History
     id = 1 #What should this be?
-    url = 'http://127.0.0.1:'+str(region)+'/transactions/' + str(id)
+    url = 'http://localhost:'+str(region)+'/transactions/' + str(id)
     response = requests.post(url,json={"user_id": args.id, "order_details": args.order})
     data = response.json()
     print(data)

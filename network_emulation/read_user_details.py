@@ -19,6 +19,6 @@ if __name__ =="__main__":
 
     #API Request
     region = config[args.region]["api_port"]
-    response = requests.get(f"http://127.0.0.1:{str(region)}/users/{args.id}")
+    response = requests.get(f"http://localhost:{str(region)}/users/{args.id}")
     data = response.json()
     print(data)

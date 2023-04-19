@@ -20,6 +20,6 @@ if __name__ =="__main__":
 
     #API Request
     region = config[args.region]["api_port"]
-    response = requests.get('http://127.0.0.1:'+str(region)+'/transactions/' +args.id)
+    response = requests.get('http://localhost:'+str(region)+'/transactions/' +args.id)
     data = response.json()
     print(data)

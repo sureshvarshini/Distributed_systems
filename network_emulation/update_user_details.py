@@ -32,5 +32,5 @@ if __name__ =="__main__":
         json_o["name"] = args.name
         json_o["email"] = args.email
 
-    response = requests.put(f"http://127.0.0.1:{str(region)}/users/{args.id}", json=json_o)
+    response = requests.put(f"http://localhost:{str(region)}/users/{args.id}", json=json_o)
     print(response.json())
