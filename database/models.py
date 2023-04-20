@@ -1,8 +1,7 @@
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy.sql import func
-from sqlalchemy import update
 from flask import jsonify
-from pymongo import MongoClient, errors
+from pymongo import MongoClient
 from datetime import datetime
 import uuid
 from cache.redis_cache import RedisClient

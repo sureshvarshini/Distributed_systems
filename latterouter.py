@@ -1,6 +1,8 @@
 from flask import Flask
 from database.models import db
 from config import MARIA_ADDRESS
+from cache.redis_cache import RedisClient
+from rq import Queue, Worker
 import os
 
 # App instance
@@ -14,10 +16,13 @@ app.register_blueprint(api, url_prefix="/api")
 db.init_app(app)
 print("Connected to MARIADB")
 
-
 with app.app_context():
     db.create_all()
 
+redis = RedisClient()
+queue = Queue(connection=redis)
+worker = Worker(queues=[queue], connection=redis)
+worker.work()
 print(app.url_map)
 
 @app.route('/')

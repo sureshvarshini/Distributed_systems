@@ -1,7 +1,8 @@
-from latterouter import app
+from latterouter import app, queue
 from flask import request, jsonify
 from database.models import add_user, update_user, update_user_points, get_user_points, get_user_info
 from config import REGION, AVAILABLE_REGIONS, redirect_request_to_region
+from rq import Retry
 
 @app.route("/users/<string:id>", methods=['POST', 'PUT'])
 def points_data(id):
@@ -37,7 +38,9 @@ def points_data(id):
             print(request.url, flush=True)
             response = redirect_request_to_region(request.method, request.url, user_region, REGION, data)
             return response
-        user = update_user(data, id)
+        job = queue.enqueue(update_user, args=(data, id), retry=Retry(max=3, interval=[10, 30, 50]))
+        print("Test", flush=True)
+        user = job.result
         if user is not None:
             response = jsonify({'id': user.user_id, 'message': 'Sucessfully updated.'})
             response.status_code = 200
@@ -89,7 +92,8 @@ def user_points(id):
             print(request.url, flush=True)
             response = redirect_request_to_region(request.method, request.url, user_region, REGION, data)
             return response
-        response = update_user_points(id, data)
+        job = queue.enqueue(update_user_points, args=(id, data), retry=Retry(max=3, interval=[10, 30, 50]))
+        response = job.result
         if 'error' in response:
             response = jsonify(response)
             response.status_code = 400
