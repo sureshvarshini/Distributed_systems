@@ -65,7 +65,7 @@ services:
   fra-app-1:
     build: .
     container_name: fra-app-1
-    command: bash -c "python /cache/worker.py && python -m flask --app latterouter run -h 0.0.0.0 --port=5011 --debug"
+    command: python -m flask --app latterouter run -h 0.0.0.0 --port=5011 --debug
     environment:
       REGION: 'FRA'
     volumes:
@@ -96,6 +96,15 @@ services:
       - mariadb-fra
       - mongodb-fra
 
+  worker-fra:
+    build: .
+    container_name: worker-fra
+    environment:
+      REGION: 'FRA'
+    ports:
+      - "6000:6000"
+    networks:
+      - app-network
 
 volumes:
   redis-fra:

@@ -3,7 +3,7 @@ from  redis import from_url
 from rq import Worker, Queue, Connection
 
 listen = ['latteq']
-region = os.environ.get("REGION")
+region = os.environ.get("REGION").lower()
 redis_url = f"redis://redis-{region}:6379/1"
 conn = from_url(redis_url)
 
