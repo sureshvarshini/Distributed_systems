@@ -12,8 +12,6 @@ class RedisClient():
             self.client = redis.Redis(host=REDIS_ADDRESS["redis_host"], port=REDIS_ADDRESS["redis_port"], socket_timeout=5, charset="utf-8", decode_responses=True)
             ping = self.client.ping()
             self.queue = Queue('latteq', connection=self.client)
-            worker = Worker('latteq', connection=self.client)
-            worker.work()
             if ping is True:
                 print("Connected to REDIS")
         except redis.RedisError:
