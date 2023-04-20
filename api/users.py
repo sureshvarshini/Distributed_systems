@@ -1,8 +1,11 @@
-from latterouter import app, queue
+from latterouter import app
 from flask import request, jsonify
 from database.models import add_user, update_user, update_user_points, get_user_points, get_user_info
 from config import REGION, AVAILABLE_REGIONS, redirect_request_to_region
+from cache.redis_cache import RedisClient
 from rq import Retry
+
+redis = RedisClient()
 
 @app.route("/users/<string:id>", methods=['POST', 'PUT'])
 def points_data(id):
@@ -38,8 +41,8 @@ def points_data(id):
             print(request.url, flush=True)
             response = redirect_request_to_region(request.method, request.url, user_region, REGION, data)
             return response
-        job = queue.enqueue(update_user, args=(data, id), retry=Retry(max=3, interval=[10, 30, 50]))
-        print("Test", flush=True)
+        job = redis.queue.enqueue(update_user, args=(data, id), retry=Retry(max=3, interval=[10, 30, 50]))
+        print("test"+job.result)
         user = job.result
         if user is not None:
             response = jsonify({'id': user.user_id, 'message': 'Sucessfully updated.'})
@@ -92,7 +95,7 @@ def user_points(id):
             print(request.url, flush=True)
             response = redirect_request_to_region(request.method, request.url, user_region, REGION, data)
             return response
-        job = queue.enqueue(update_user_points, args=(id, data), retry=Retry(max=3, interval=[10, 30, 50]))
+        job = redis.queue.enqueue(update_user_points, args=(id, data), retry=Retry(max=3, interval=[10, 30, 50]))
         response = job.result
         if 'error' in response:
             response = jsonify(response)
