@@ -115,3 +115,12 @@ def update_user_points(user_id, data):
     redis_client.add_to_cache(points_data['user_id'], points_data['points'])
 
     return {'user_id': points_data['user_id'], 'points': points_data['points']}
+
+def add_to_redis(key,value):
+    redis_client.add_to_cache(key,value)
+
+def get_from_redis(key):
+    # Get from redis cache
+    response = redis_client.get_from_cache(key)
+    return response
+     

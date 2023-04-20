@@ -1,6 +1,6 @@
 from latterouter import app
 from flask import request, jsonify
-from database.models import add_user, update_user, update_user_points, get_user_points, get_user_info
+from database.models import add_user, update_user, update_user_points, get_user_points, get_user_info, add_to_redis, get_from_redis
 from config import REGION, AVAILABLE_REGIONS, redirect_request_to_region
 
 @app.route("/users/<string:id>", methods=['POST', 'PUT'])
@@ -75,8 +75,13 @@ def user_points(id):
         if user_region != REGION:
             print(REGION, flush=True)
             print(request.url, flush=True)
-            response = redirect_request_to_region(request.method, request.url, user_region, REGION)
-            return response
+            cached = get_from_redis(id)
+            if cached is not None:
+                return {'points':cached,'user_id':id}
+            else:
+                response = redirect_request_to_region(request.method, request.url, user_region, REGION)
+                add_to_redis(id,response['points'])
+                return response
         response = jsonify(get_user_points(id))
         response.status_code = 200
         return response
