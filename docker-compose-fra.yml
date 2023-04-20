@@ -97,12 +97,11 @@ services:
       - mongodb-fra
 
   worker-fra:
-    build: .
+    build: ./cache/worker
     container_name: worker-fra
+    command: python worker.py
     environment:
       REGION: 'FRA'
-    ports:
-      - "6000:6000"
     networks:
       - app-network
 

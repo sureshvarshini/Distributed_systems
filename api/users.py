@@ -42,7 +42,6 @@ def points_data(id):
             response = redirect_request_to_region(request.method, request.url, user_region, REGION, data)
             return response
         job = redis.queue.enqueue(update_user, args=(data, id), retry=Retry(max=3, interval=[10, 30, 50]))
-        print("test"+job.result)
         user = job.result
         if user is not None:
             response = jsonify({'id': user.user_id, 'message': 'Sucessfully updated.'})
